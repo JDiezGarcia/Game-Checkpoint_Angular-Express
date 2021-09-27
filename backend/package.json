@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node app.js",
+    "dev": "nodemon app.js"
   },
   "author": "Fco. Javier Diez Garcia",
   "license": "ISC",
@@ -16,6 +17,7 @@
     "method-override": "^3.0.0",
     "mongoose": "^6.0.7",
     "mongoose-unique-validator": "^0.1.0",
+    "nodemon": "^2.0.13",
     "slug": "^5.1.0"
   }
 }

@@ -1,0 +1,58 @@
+{
+    "games": [
+        {
+            "_id": "1578548124",
+            "slug": "gothic-2-1578548124",
+            "name": "Gothic 2",
+            "description": "desc-gothic",
+            "categories": [
+                "RPG",
+                "Open World"
+            ],
+            "img": "resources/img/games/gothic-cover.jpg",
+            "baseHours": 60,
+            "universe": "GOTHIC-001",
+            "rating": 0,
+            "comments": [
+                "0001",
+                "0002"
+            ]
+        },
+        {
+            "_id": "685203127",
+            "slug": "gothic-2-685203127",
+            "name": "Gothic 2",
+            "description": "desc-gothic-2",
+            "categories": [
+                "RPG",
+                "Open World"
+            ],
+            "img": "resources/img/games/gothic-2-cover.jpg",
+            "baseHours": 60,
+            "universe": "GOTHIC-001",
+            "rating": 0,
+            "comments": [
+                "0003",
+                "0004"
+            ]
+        },
+        {
+            "_id": "665170522",
+            "slug": "gothic-3-665170522",
+            "name": "Gothic 3",
+            "description": "desc-gothic-3",
+            "categories": [
+                "RPG",
+                "Open World"
+            ],
+            "img": "resources/img/games/gothic-3-cover.jpg",
+            "baseHours": 60,
+            "universe": "GOTHIC-001",
+            "rating": 0,
+            "comments": [
+                "0005",
+                "0006"
+            ]
+        }
+    ]
+}
