@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Game } from '../core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Game, GamesService, } from '../core';
 
 @Component({
   selector: 'app-details',
@@ -9,9 +9,14 @@ import { Game, GamesService, } from '../core';
 })
 export class DetailsComponent implements OnInit {
   constructor(
-  ) { }
+    private route: ActivatedRoute,
+    private router: Router,
+    ) { }
+  
+  game!: Game;
 
   ngOnInit() {
-
+    this.route.data.subscribe(
+      (data => { this.game = data.game }))
   }
 }

@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 
 import { GamesRoutingModule } from './games-routing.module';
 import { GamesComponent } from './games.component';
+import { SharedModule } from '../shared';
+import { RouterModule } from '@angular/router';
 
 
 @NgModule({
@@ -11,7 +13,9 @@ import { GamesComponent } from './games.component';
   ],
   imports: [
     CommonModule,
-    GamesRoutingModule
+    GamesRoutingModule,
+    SharedModule,
+    RouterModule
   ]
 })
 export class GamesModule { }

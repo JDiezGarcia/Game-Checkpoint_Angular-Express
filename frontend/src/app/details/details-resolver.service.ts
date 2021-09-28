@@ -9,15 +9,14 @@ import { catchError } from 'rxjs/operators';
 export class DetailsResolver implements Resolve<Game> {
   constructor(
     private gamesService: GamesService,
-    private router: Router,
+    private router: Router
   ) {}
 
   resolve(
-    route: ActivatedRouteSnapshot,
+    router: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<any> {
-
-    return this.gamesService.get(route.params['slug'])
+      return this.gamesService.get(router.params['slug'])
       .pipe(catchError((err) => this.router.navigateByUrl('/')));
   }
 }

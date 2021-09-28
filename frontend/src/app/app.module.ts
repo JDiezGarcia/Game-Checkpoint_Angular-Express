@@ -1,5 +1,8 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClientModule } from '@angular/common/http';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome'
 
 import { GamesModule } from './games/games.module';
 import { DetailsModule } from './details/details.module';
@@ -16,11 +19,15 @@ import { CoreModule} from './core/core.module';
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
+    FontAwesomeModule,
     AppRoutingModule,
     SharedModule,
     GamesModule,
     DetailsModule,
-    CoreModule
+    CoreModule,
+    HttpClientModule
+
   ],
   providers: [],
   bootstrap: [AppComponent]

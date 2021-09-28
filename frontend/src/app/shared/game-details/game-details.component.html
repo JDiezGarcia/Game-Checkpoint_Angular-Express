@@ -1,0 +1,51 @@
+<div class="shop-page" style="margin-top: 20px;margin-bottom: 20px;">
+  <div id="shop-products" class="container">
+    <div class="row">
+      <div class="col-4">
+        <img style="max-width: 100%; display:block;" [src]="game.img" />
+      </div>
+      <div class="col-8" style="margin: auto;">
+        <fieldset class="border p-2">
+            <legend class="control-label customer-legend pl-1 product-title">
+                {{game.name}}
+            </legend>
+            <h5 class="rating">
+                <span style="font-weight: bold;">Rating:</span>
+                <span>{{game.rating}}</span>
+            </h5>
+            <p class="views">
+                <span style="font-weight: bold;">Base Hours:</span>
+                <span>{{game.baseHours}}</span>
+            </p>
+                <p class="universe">
+                <span style="font-weight: bold;">Universe:</span>
+                <span>{{game.universe}}</span>
+            </p>
+            <p class="description">
+                <span style="font-weight: bold;">Description:</span>
+                <span>{{game.description}}</span>
+            </p>
+            <div class="categories">
+                <span style="font-weight: bold;">Platforms:</span>
+                <ul class="tag-list">
+                    <li class="tag-default tag-pill tag-outline" *ngFor="let category of game.categories">
+                    {{ category }}
+                    </li>
+                </ul>
+            </div>
+            <div class="action">
+                <button class="button-card add-to-cart btn btn-default" type="button"
+                    style="background-color:#66A6DB; color: white;">
+                    <span class="fa fa-shopping-cart"></span>
+                    Add to Cart..
+                </button>
+                <button class="button-card btn btn-success" style="width:50px !important;">
+                    <i class="fa fa-heart-o"></i>
+                    <i class="fa fa-heart"></i>
+                </button>
+            </div>
+        </fieldset>
+      </div>
+    </div>
+  </div>
+</div>

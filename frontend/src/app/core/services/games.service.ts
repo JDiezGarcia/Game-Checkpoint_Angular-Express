@@ -10,22 +10,22 @@ import { map } from 'rxjs/operators';
 export class GamesService {
   constructor(
     private apiService: ApiService
-  ) { }
+  ) {}
 
-  query(config: GameListConfig): Observable<{ games: Game[], gameCount: number }> {
+  query(): Observable<{ games: Game[], gameCount: number }> {
     // Convert any filters over to Angular's URLSearchParams
-    const params = {};
-
-    return this.apiService
-      .get(
-        '/games' + ((config.type === 'feed') ? '/feed' : ''),
-        new HttpParams({ fromObject: params })
-      );
+    return this.apiService.get(('/games'))
+    .pipe(map(data => {
+      console.log(data)
+      return data
+    }));
   }
 
-  get(slug): Observable<Game> {
-    return this.apiService.get(slug)
-      .pipe(map(data => data.game));
+  get(slug: string): Observable<Game> {
+    return this.apiService.get('/details/'+slug)
+      .pipe(map(data => {
+        return data.games
+      }));
   }
 
   // destroy(slug) {
