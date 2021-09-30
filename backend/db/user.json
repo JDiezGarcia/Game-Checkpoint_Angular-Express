@@ -1,0 +1,95 @@
+{
+    "users": [
+        {
+            "_id": "00000001",
+            "email": "jdiez.estacio@gmail.com",
+            "user": "jdiez",
+            "img": "jdiez.png",
+            "gamesFollow": [
+                {
+                    "game": "1578548124",
+                    "status": "finished"
+                },
+                {
+                    "game": "685203127",
+                    "status": "playing"
+                },
+                {
+                    "game": "665170522",
+                    "status": "pending"
+                }
+            ],
+            "fav": [
+                "665170522"
+            ],
+            "followers": [
+                "00000002",
+                "00000003"
+            ],
+            "follow": [
+                "00000002"
+            ],
+            "comments": [
+            ]
+        },
+        {
+            "_id": "00000002",
+            "email": "fco.javier.diez.garcia@gmail.com",
+            "user": "fjdiezgarcia",
+            "img": "fjdiezgarcia.png",
+            "gamesFollow": [
+                {
+                    "game": "1578548124",
+                    "status": "finished"
+                },
+                {
+                    "game": "685203127",
+                    "status": "pending"
+                },
+                {
+                    "game": "665170522",
+                    "status": "finished"
+                }
+            ],
+            "fav": [
+                "665170522"
+            ],
+            "followers": [
+                "00000001"
+            ],
+            "follow": [],
+            "comments": [
+            ]
+        },
+        {
+            "_id": "00000003",
+            "email": "wolfsarter@gmail.com",
+            "user": "wolfsarter",
+            "img": "wolfsarter.png",
+            "gamesFollow": [
+                {
+                    "game": "1578548124",
+                    "status": "finished"
+                },
+                {
+                    "game": "685203127",
+                    "status": "finished"
+                },
+                {
+                    "game": "665170522",
+                    "status": "finished"
+                }
+            ],
+            "fav": [
+                "665170522","1578548124","685203127"
+            ],
+            "followers": [
+                "00000001","00000002"
+            ],
+            "follow": ["00000001", "00000002"],
+            "comments": [
+                "000000001"
+            ]
+        }
+    ]
+}

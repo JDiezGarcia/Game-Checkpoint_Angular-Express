@@ -16,6 +16,7 @@
     "express": "^4.17.1",
     "method-override": "^3.0.0",
     "mongoose": "^6.0.7",
+    "mongoose-deep-populate": "^3.2.0",
     "mongoose-unique-validator": "^0.1.0",
     "nodemon": "^2.0.13",
     "slug": "^5.1.0"

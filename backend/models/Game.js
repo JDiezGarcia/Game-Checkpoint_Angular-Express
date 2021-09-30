@@ -1,37 +1,42 @@
 var mongoose = require('mongoose');
 var uniqueValidator = require('mongoose-unique-validator');
 var slug = require('slug');
-// var User = mongoose.model('User');
+var Populate = require('../db/populate');
 
 var GameSchema = new mongoose.Schema({
-  _id: Number,
-  slug: {type: String, lowercase: true, unique: true},
+  _id: String,
+  slug: { type: String, lowercase: true, unique: true },
   name: String,
   description: String,
   categories: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Categories' }],
   img: String,
   baseHours: Number,
   universe: { type: mongoose.Schema.Types.ObjectId, ref: 'Universe' },
-  rating: Number
-}, {timestamps: true});
+  rating: Number,
+  comments: [{ type: String, ref: 'Comment' }]
 
-GameSchema.plugin(uniqueValidator, {message: 'is already taken'});
+}, { timestamps: true });
 
-GameSchema.pre('validate', function(next){
-  if(!this._id){
+GameSchema.plugin(uniqueValidator, { message: 'is already taken' });
+
+
+GameSchema.pre('findOne', Populate('comments'));
+
+GameSchema.pre('validate', function (next) {
+  if (!this._id) {
     this._id = Math.random() * Math.pow(36, 6) | 0;
   }
-  if(!this.slug)  {
+  if (!this.slug) {
     this.slugify();
   }
   next();
 });
 
-GameSchema.methods.slugify = function() {
+GameSchema.methods.slugify = function () {
   this.slug = slug(this.name) + '-' + this._id.toString(36);
 };
 
-GameSchema.methods.toJSONFor = function(){
+GameSchema.methods.toDetailsJSONFor = function () {
   return {
     slug: this.slug,
     name: this.name,
@@ -40,7 +45,20 @@ GameSchema.methods.toJSONFor = function(){
     img: this.img,
     baseHours: this.baseHours,
     universe: this.universe,
-    rating: this.rating
+    rating: this.rating,
+    comments: this.comments.map(comment => {
+      return comment.toCommentJSONFor();
+    })
+  };
+};
+
+GameSchema.methods.toListJSONFor = function () {
+  return {
+    slug: this.slug,
+    name: this.name,
+    categories: this.categories,
+    img: this.img,
+    rating: this.rating,
   };
 };
 

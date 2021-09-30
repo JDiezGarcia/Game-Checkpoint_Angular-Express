@@ -1,12 +1,7 @@
-var http = require('http'),
-	path = require('path'),
-	methods = require('method-override'),
-	express = require('express'),
+var express = require('express'),
 	errorhandler = require('errorhandler'),
 	cors = require('cors'),
-	slug = require('slug'),
-	mongoose = require('mongoose'),
-	uniqueValidator = require('mongoose-unique-validator');
+	mongoose = require('mongoose')
 
 require('dotenv').config({ path: './config/config.env' });
 var app = express();
@@ -21,9 +16,9 @@ app.use(errorhandler());
 mongoose.connect(process.env.DB_MONGO_URI);
 mongoose.set('debug', true);
 
+require('./models/User');
+require('./models/Comment');
 require('./models/Game');
-// require('./models/Article');
-// require('./models/Comment');
 // require('./config/passport');
 
 app.use(require('./routes'));

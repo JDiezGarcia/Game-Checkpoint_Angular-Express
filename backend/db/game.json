@@ -2,8 +2,8 @@
     "games": [
         {
             "_id": "1578548124",
-            "slug": "gothic-2-1578548124",
-            "name": "Gothic 2",
+            "slug": "gothic-1578548124",
+            "name": "Gothic",
             "description": "desc-gothic",
             "categories": [
                 "RPG",
@@ -14,8 +14,7 @@
             "universe": "GOTHIC-001",
             "rating": 0,
             "comments": [
-                "0001",
-                "0002"
+                "000100000"
             ]
         },
         {
@@ -27,13 +26,12 @@
                 "RPG",
                 "Open World"
             ],
-            "img": "resources/img/games/gothic-2-cover.jpg",
+            "img": "resources/img/games/gothic2-cover.jpg",
             "baseHours": 60,
             "universe": "GOTHIC-001",
             "rating": 0,
             "comments": [
-                "0003",
-                "0004"
+                "000200000"
             ]
         },
         {
@@ -45,13 +43,12 @@
                 "RPG",
                 "Open World"
             ],
-            "img": "resources/img/games/gothic-3-cover.jpg",
+            "img": "resources/img/games/gothic3-cover.jpg",
             "baseHours": 60,
             "universe": "GOTHIC-001",
             "rating": 0,
             "comments": [
-                "0005",
-                "0006"
+                "000300000"
             ]
         }
     ]
