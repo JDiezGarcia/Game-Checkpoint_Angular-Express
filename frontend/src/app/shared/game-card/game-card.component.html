@@ -1,32 +1,12 @@
-<div class="game-card">
-  <div class="card p-3">
-    <img class="img-categ img" [src]="game.img" width="100%" [routerLink]="['/details', game.slug]" />
-    <div class="product-details">
-      <span class="fw-bold d-block game-name" style="display:inline-block">{{game.name}}</span>
-      <span>Rating: <span class="detail">{{game.rating}}</span></span><br>
-      <span>Base Hours: <span class="detail">{{game.baseHours}}</span></span><br>
-      <span>Universe: <span class="detail">{{game.universe}}</span></span>
-      <div class="buttons d-flex flex-row row" style="font-size-adjust: 30px;">
-
-        <button class="col-4 btn btn-success button-card">
-          <i class="fa fa-shopping-cart"></i>
-        </button>
-
-        <button class="col-4 btn btn-success button-card">
-          <i class="fa fa-eye"></i>
-        </button>
-        <button class="col-4 btn btn-success button-card">
-          <i class="fa fa-heart"></i>
-        </button>
-      </div>
-      <div class="weight"> <small>{{game.description}}</small></div>
-      <div class="weight"> <small>
-          <ul class="tag-list">
-            <li class="tag-default tag-pill tag-outline" *ngFor="let category of game.categories">
-              {{ category }}
-            </li>
-          </ul>
-        </small></div>
+<div class="card">
+  <div class="card-img-top">
+    <img [src]="game.img" />
+    <div class="fa-stack fa-1x">
+      <i class="fas fa-square fa-stack-2x"></i>
+      <i class="fa fa-plus fa-stack-1x fa-inverse"></i>
+      <i class="fa fa-check fa-stack-1x fa-inverse" hidden></i>
     </div>
+
+    <i class="fa fa-eye" [routerLink]="['/details', game.slug]"></i>
   </div>
 </div>

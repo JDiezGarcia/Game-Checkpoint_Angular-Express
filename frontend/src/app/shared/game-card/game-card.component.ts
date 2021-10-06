@@ -4,6 +4,7 @@ import { Game } from '../../core';
 
 @Component({
   selector: 'app-game-card',
+  styleUrls: ['game-card.component.css'],
   templateUrl: './game-card.component.html'
 })
 export class GameCardComponent {

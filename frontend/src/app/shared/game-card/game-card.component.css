@@ -1,0 +1,46 @@
+.card {
+  width: 200px;
+  border-radius: 20px;
+  margin: auto;
+  margin-bottom: 20px;
+}
+
+.card-img-top img {
+  width: max-content;
+  display: block;
+  border-radius: 20px 20px 20px 20px;
+}
+
+.card-img-top:hover img{
+  opacity: 0.7;
+}
+
+.card-img-top {
+  position: relative;
+  border-radius: 20px 20px 20px 20px;
+  background-color: black;
+}
+
+.card-img-top .fa-stack {
+  color: purple;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  visibility: hidden;
+}
+
+.card-img-top i.fa-eye{
+  color: white;
+  position: absolute;
+  visibility: hidden;
+  font-size: 40px;
+  text-align: center;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.card-img-top:hover .fa-stack,.card-img-top:hover .fa-eye{
+  visibility: visible;
+  cursor: pointer;
+}

@@ -3,29 +3,30 @@ import { HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { ApiService } from './api.service';
-import { Game, GameListConfig } from '../models';
+import { Game, GameFilters } from '../models';
 import { map } from 'rxjs/operators';
 
 @Injectable()
 export class GamesService {
-  constructor(
-    private apiService: ApiService
-  ) {}
+  constructor(private apiService: ApiService) {}
 
-  query(): Observable<{ games: Game[], gameCount: number }> {
-    // Convert any filters over to Angular's URLSearchParams
-    return this.apiService.get(('/games'))
-    .pipe(map(data => {
-      console.log(data)
-      return data
-    }));
+  query(config: GameFilters): Observable<{ games: Game[]; gameCount: number }> {
+    return this.apiService
+      .get('/games', new HttpParams({ fromObject: config as any }))
+      .pipe(
+        map((data) => {
+          console.log(data);
+          return data;
+        })
+      );
   }
 
   get(slug: string): Observable<Game> {
-    return this.apiService.get('/details/'+slug)
-      .pipe(map(data => {
-        return data.games
-      }));
+    return this.apiService.get('/details/' + slug).pipe(
+      map((data) => {
+        return data.games;
+      })
+    );
   }
 
   // destroy(slug) {
@@ -52,6 +53,4 @@ export class GamesService {
   // unfavorite(slug): Observable<Game> {
   //   return this.apiService.delete('/articles/' + slug + '/favorite');
   // }
-
-
 }

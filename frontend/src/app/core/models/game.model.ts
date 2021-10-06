@@ -1,4 +1,7 @@
+import {Comment} from './comment.model';
+
 export class Game {
+    
     slug: String;
     name: String;
     description: String;
@@ -7,6 +10,7 @@ export class Game {
     baseHours: Number;
     universe: String;
     rating: Number;
+    comments: Comment[];
 
     constructor(
         slug: string,
@@ -16,7 +20,8 @@ export class Game {
         img: string,
         baseHours: number,
         universe: string,
-        rating: number
+        rating: number,
+        comments: Comment[]
     ) {
         this.slug = slug;
         this.name = name;
@@ -26,5 +31,6 @@ export class Game {
         this.baseHours = baseHours;
         this.universe = universe;
         this.rating = rating;
+        this.comments = comments;
     }
 }
