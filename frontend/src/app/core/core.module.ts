@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ApiService, GamesService } from './services';
+import { ApiService, GamesService, CategoriesService } from './services';
 
 @NgModule({
   declarations: [],
@@ -9,7 +9,8 @@ import { ApiService, GamesService } from './services';
   ],
   providers: [
     ApiService,
-    GamesService
+    GamesService,
+    CategoriesService
   ]
 })
 export class CoreModule { }

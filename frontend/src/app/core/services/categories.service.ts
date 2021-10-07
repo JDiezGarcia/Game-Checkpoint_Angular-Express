@@ -6,13 +6,14 @@ import { map } from 'rxjs/operators';
 
 @Injectable()
 export class CategoriesService {
-  constructor (
-    private apiService: ApiService
-  ) {}
+  constructor(private apiService: ApiService) {}
 
-  getAll(): Observable<[string]> {
-    return this.apiService.get('/categories')
-          .pipe(map(data => data.categories));
+  getAll(): Observable<String[]> {
+    return this.apiService.get('/categories').pipe(
+      map((data) => {
+        return data.categories;
+      })
+    );
   }
 
 }

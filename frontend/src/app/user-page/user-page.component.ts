@@ -9,6 +9,9 @@ export class UserPageComponent implements OnInit {
 
   constructor() { }
 
+  config: CarouselConfig = {
+    type: "categories"
+  }
   
   ngOnInit(): void {
   }

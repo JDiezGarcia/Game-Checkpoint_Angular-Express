@@ -10,6 +10,7 @@ import {FooterComponent, HeaderComponent, SharedModule} from './shared';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { UserPageModule } from './user-page/user-page.module';
 import { CoreModule} from './core/core.module';
 
 
@@ -25,6 +26,7 @@ import { CoreModule} from './core/core.module';
     SharedModule,
     GamesModule,
     DetailsModule,
+    UserPageModule,
     CoreModule,
     HttpClientModule
 

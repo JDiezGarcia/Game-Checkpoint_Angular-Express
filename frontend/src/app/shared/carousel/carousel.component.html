@@ -4,19 +4,20 @@
     <div class="carousel-item active">
       <div class="container">
         <div class="row">
-          <ng-container *ngIf="slideCategories.length >= 1">
+          <ng-container *ngIf="slideCategories">
             <app-category-card
               *ngFor="let slide of slideCategories"
               [category]="slide"
-              class="col-2 carusel-item category-card"
+              [ngClass]="{'active': i === 4}"
+              class="col-6 carusel-item category-card"
             >
             </app-category-card>
           </ng-container>
-          <ng-container *ngIf="slideGames.length >= 1">
+          <ng-container *ngIf="slideGames">
             <app-game-card
               *ngFor="let slide of slideGames"
               [game]="slide"
-              class="col-2 carusel-item game-card"
+              class="col-4 carusel-item game-card"
             >
             </app-game-card>
           </ng-container>
