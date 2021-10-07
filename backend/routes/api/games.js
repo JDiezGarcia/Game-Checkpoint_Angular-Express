@@ -16,15 +16,18 @@ router.param('game', async function (req, res, next, slug) {
 router.get('/games', async function (req, res) {
 
     var query = {};
-    var limit = req.query.limit !== 'undefined' ? req.query.limit : 2;
-    var offset = req.query.offset !== 'undefined' ? req.query.offset : 0;
-    if (req.query.tag !== 'undefined') {
-        query.tagList = { "$in": [req.query.tag] };
+    var limit = typeof req.query.limit !== 'undefined' ? req.query.limit : 2;
+    var offset = typeof req.query.offset !== 'undefined' ? req.query.offset : 0;
+    if (typeof req.query.categories !== 'undefined') {
+        query.categories = { "$all": req.query.categories };
+    }
+    if (typeof req.query.query !== 'undefined') {
+        query.name = { $regex: ".*"+ req.query.query +".*"};
     }
 
 
-    var gameList = Game.find().limit(Number(limit)).skip(Number(offset)).exec();
-    var gamesCount = Game.count().exec();
+    var gameList = Game.find(query).limit(Number(limit)).skip(Number(offset)).exec();
+    var gamesCount = Game.count(query).exec();
     try {
         gameList = await gameList;
         gamesCount = await gamesCount;

@@ -8,7 +8,7 @@ var GameSchema = new mongoose.Schema({
   slug: { type: String, lowercase: true, unique: true },
   name: String,
   description: String,
-  categories: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Categories' }],
+  categories: [ String ],
   img: String,
   baseHours: Number,
   universe: { type: mongoose.Schema.Types.ObjectId, ref: 'Universe' },

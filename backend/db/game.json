@@ -7,7 +7,7 @@
             "description": "desc-gothic",
             "categories": [
                 "RPG",
-                "Open World"
+                "Open-World"
             ],
             "img": "resources/img/games/gothic-cover.jpg",
             "baseHours": 60,
@@ -24,7 +24,7 @@
             "description": "desc-gothic-2",
             "categories": [
                 "RPG",
-                "Open World"
+                "Open-World"
             ],
             "img": "resources/img/games/gothic2-cover.jpg",
             "baseHours": 60,
@@ -41,7 +41,8 @@
             "description": "desc-gothic-3",
             "categories": [
                 "RPG",
-                "Open World"
+                "Open-World",
+                "Simulator"
             ],
             "img": "resources/img/games/gothic3-cover.jpg",
             "baseHours": 60,
@@ -49,6 +50,23 @@
             "rating": 0,
             "comments": [
                 "000300000"
+            ]
+        },
+        {
+            "_id": "665180522",
+            "slug": "zelda-breath-of-the-wild-665180522",
+            "name": "Zelda: Breath of the Wild",
+            "description": "desc-zelda-botw",
+            "categories": [
+                "RPG",
+                "Sandbox",
+                "Simulator"
+            ],
+            "img": "resources/img/games/zeldabreathofthewild-cover.jpg",
+            "baseHours": 120,
+            "universe": "ZELDA-001",
+            "rating": 0,
+            "comments": [
             ]
         }
     ]
