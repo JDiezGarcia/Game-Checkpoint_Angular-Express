@@ -1,10 +1,12 @@
 import { Component, Input } from '@angular/core';
+import { Router } from '@angular/router';
 import {
   Game,
   GamesService,
   CarouselConfig,
   CategoriesService,
   GameFilters,
+  GameListConfig
 } from '../../core';
 
 @Component({
@@ -15,7 +17,8 @@ import {
 export class CarouselComponent {
   constructor(
     private gamesService: GamesService,
-    private categoriesService: CategoriesService
+    private categoriesService: CategoriesService,
+    private router: Router
   ) {}
 
   @Input()
@@ -28,20 +31,37 @@ export class CarouselComponent {
 
   filters?: GameFilters;
   results!: Game[] | String[];
-  slideGames!: Game[];
-  slideCategories!: String[];
+  slideGames!: Game[][];
+  slideCategories!: String[][];
 
   loadSlides(type: String) {
     if (type === 'categories') {
       this.categoriesService.getAll().subscribe((data) => {
-        this.slideCategories = data;
+        this.slideCategories = this.splitToGroups(data);
       });
     } else if (type === 'games') {
       this.gamesService.query(this.filters as any).subscribe((data) => {
-        this.slideGames = data.games;
+        this.slideGames = this.splitToGroups(data.games);
       });
     }
-    console.log(this.slideCategories)
   }
   
+  splitToGroups<Type>(data: Type[], perGroup: Number = 2): Type[][] {
+    return data.reduce(
+      (data, newData) => {
+        let lastPage: Type[] = data[data.length - 1];
+        if (lastPage.length < perGroup) {
+          lastPage.push(newData);
+        } else {
+          data.push([newData]);
+        }
+        return data;
+      },
+      [[]] as Type[][]
+    );
+  }
+
+  redirect(category: string){
+    this.router.navigate(['/games'], { queryParams: { categories: category }})
+  }
 }

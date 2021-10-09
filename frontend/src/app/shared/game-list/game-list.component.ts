@@ -38,7 +38,6 @@ export class GameListComponent {
     }
 
     this.gamesService.query(this.query).subscribe((data) => {
-      console.log(data);
       this.loading = false;
       this.results = data.games;
       // Used from http://www.jstips.co/en/create-range-0...n-easily-using-one-line/

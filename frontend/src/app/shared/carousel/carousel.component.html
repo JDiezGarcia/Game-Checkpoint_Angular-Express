@@ -1,29 +1,43 @@
 <div id="carousel" class="carousel slide" data-bs-ride="carousel">
   <div class="carousel-inner">
     <!-- CAROUSEL -->
-    <div class="carousel-item active">
-      <div class="container">
-        <div class="row">
-          <ng-container *ngIf="slideCategories">
+    <ng-container *ngIf="slideCategories">
+      <div
+        *ngFor="let page of slideCategories; let i = index"
+        class="carousel-item"
+        [ngClass]="{ active: i === 0 }"
+      >
+        <div class="container">
+          <div class="row">
             <app-category-card
-              *ngFor="let slide of slideCategories"
+              *ngFor="let slide of page"
               [category]="slide"
-              [ngClass]="{'active': i === 4}"
-              class="col-6 carusel-item category-card"
-            >
-            </app-category-card>
-          </ng-container>
-          <ng-container *ngIf="slideGames">
-            <app-game-card
-              *ngFor="let slide of slideGames"
-              [game]="slide"
-              class="col-4 carusel-item game-card"
-            >
-            </app-game-card>
-          </ng-container>
+              class="category-card"
+              (categorySelect)="redirect($event)"
+              [ngClass]="{ 'col-2': page.length === 6 ,'col-3': page.length === 4,'col-6': page.length === 2, 'col-4': page.length === 3 }"
+            ></app-category-card>
+          </div>
         </div>
       </div>
-    </div>
+    </ng-container>
+    <ng-container *ngIf="slideGames">
+      <div
+        *ngFor="let page of slideGames; let i = index"
+        class="carousel-item"
+        [ngClass]="{ active: i === 0 }"
+      >
+        <div class="container">
+          <div class="row">
+            <app-game-card
+              *ngFor="let slide of page"
+              [game]="slide"
+              class="game-card"
+              [ngClass]="{ 'col-2': page.length === 6 ,'col-3': page.length === 4,'col-6': page.length === 2, 'col-4': page.length === 3 }"
+            ></app-game-card>
+          </div>
+        </div>
+      </div>
+    </ng-container>
   </div>
   <a
     class="carousel-control-prev"
@@ -31,10 +45,7 @@
     role="button"
     data-bs-slide="prev"
   >
-    <span
-      class="carousel-control-prev-icon"
-      aria-hidden="true"
-    ></span>
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
   </a>
   <a
     class="carousel-control-next"
@@ -42,9 +53,6 @@
     role="button"
     data-bs-slide="next"
   >
-    <span
-      class="carousel-control-next-icon"
-      aria-hidden="true"
-    ></span>
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
   </a>
 </div>

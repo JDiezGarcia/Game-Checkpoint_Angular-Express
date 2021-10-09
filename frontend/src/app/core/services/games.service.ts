@@ -15,7 +15,6 @@ export class GamesService {
       .get('/games', new HttpParams({ fromObject: config as any }))
       .pipe(
         map((data) => {
-          console.log(data);
           return data;
         })
       );

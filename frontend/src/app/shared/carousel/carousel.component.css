@@ -1,5 +1,25 @@
-.category-card{
-    color: white;
-    text-transform: uppercase;
+.category-card {
+    display: flex;
     text-align: center;
+    height: 200px;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    border-right: 20px solid transparent;
+    border-left: 20px solid transparent;
+    background-clip: content-box;
+    filter: brightness(50%)
+}
+
+.category-card:hover {
+    transform: scale(1.1);
+}
+
+.carousel-control-prev-icon, .carousel-control-next-icon {
+    background-color: black;
+    pointer-events: all;
+}
+
+.carousel-control-prev, .carousel-control-next {
+    pointer-events: none;
 }

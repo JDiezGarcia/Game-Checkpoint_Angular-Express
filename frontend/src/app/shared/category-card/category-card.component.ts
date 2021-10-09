@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-category-card',
@@ -9,8 +9,9 @@ import { Component, Input } from '@angular/core';
     }
 })
 export class CategoryCardComponent {
+  @Output() categorySelect = new EventEmitter();
   @Input() category?: String;
-
+  
   color!: String;
 
   ngOnInit(){
@@ -29,5 +30,7 @@ export class CategoryCardComponent {
     var color: String = ((hash >>> 0) & 0xffffff).toString(16).padStart(6, '0');
     return '#' + color;
   }
-  
+  select(){
+    this.categorySelect.emit(this.category);
+  }
 }

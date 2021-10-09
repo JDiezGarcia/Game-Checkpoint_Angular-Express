@@ -1,0 +1,9 @@
+div {
+  color: white;
+  text-transform: uppercase;
+  text-shadow: 0 0 4px black;
+  font-size: x-large;
+  justify-content: stretch;
+  cursor: pointer;
+  padding: 90px;
+}
