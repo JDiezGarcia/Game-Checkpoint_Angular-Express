@@ -16,8 +16,9 @@
 }
 
 .carousel-control-prev-icon, .carousel-control-next-icon {
-    background-color: black;
+    background-color: purple;
     pointer-events: all;
+    border-radius: 5px;
 }
 
 .carousel-control-prev, .carousel-control-next {

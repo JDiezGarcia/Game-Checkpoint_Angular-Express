@@ -1,0 +1,24 @@
+header{
+    display: flex;
+    margin-bottom: 20px;
+    padding: 10px;
+    align-items: center;
+}
+
+.nav-links{
+    margin: 10px;
+    flex-grow: 1;
+}
+
+.user-buttons{
+    flex-grow: 1;
+    margin: 10px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.search-bar{
+    flex-grow: 2;
+    align-self: center;
+    margin: 10px;
+}

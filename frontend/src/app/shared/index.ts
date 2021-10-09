@@ -5,3 +5,5 @@ export * from './game-list';
 export * from './game-details';
 export * from './carousel';
 export * from './category-card';
+export * from './search';
+export * from './user-buttons';

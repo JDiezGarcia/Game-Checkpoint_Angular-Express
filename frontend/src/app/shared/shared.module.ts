@@ -9,6 +9,8 @@ import { GameCardComponent } from './game-card/game-card.component';
 import { GameDetailsComponent } from './game-details/game-details.component';
 import { CarouselComponent } from './carousel/carousel.component';
 import { CategoryCardComponent } from './category-card/category-card.component';
+import { SearchBarComponent } from './search/search-bar.component';
+import { UserButtonsComponent } from './user-buttons/user-buttons.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +18,9 @@ import { CategoryCardComponent } from './category-card/category-card.component';
     GameCardComponent,
     GameDetailsComponent,
     CarouselComponent,
-    CategoryCardComponent
+    CategoryCardComponent,
+    SearchBarComponent,
+    UserButtonsComponent
   ],
   imports: [
     CommonModule,
@@ -31,6 +35,8 @@ import { CategoryCardComponent } from './category-card/category-card.component';
     GameDetailsComponent,
     CarouselComponent,
     CategoryCardComponent,
+    SearchBarComponent,
+    UserButtonsComponent,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
