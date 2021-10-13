@@ -1,0 +1,20 @@
+.colG {
+    grid-area: main;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+}
+
+.colF {
+    grid-area: sidebar;
+    margin-left: 20px;
+}
+.pagination {
+    align-self: center;
+}
+.games-content {
+    display: grid;
+    grid-template-columns: 20% 80%;
+    grid-template-rows: auto;
+    grid-template-areas: "sidebar main"
+}

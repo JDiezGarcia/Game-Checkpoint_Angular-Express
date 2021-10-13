@@ -16,13 +16,13 @@ router.param('game', async function (req, res, next, slug) {
 router.get('/games', async function (req, res) {
 
     var query = {};
-    var limit = typeof req.query.limit !== 'undefined' ? req.query.limit : 2;
+    var limit = typeof req.query.limit !== 'undefined' ? req.query.limit : 10;
     var offset = typeof req.query.offset !== 'undefined' ? req.query.offset : 0;
     if (typeof req.query.categories !== 'undefined') {
         query.categories = { "$all": req.query.categories };
     }
     if (typeof req.query.query !== 'undefined') {
-        query.name = { $regex: ".*"+ req.query.query +".*"};
+        query.name = { $regex: ".*"+ req.query.query +".*", $options: "i"};
     }
 
 

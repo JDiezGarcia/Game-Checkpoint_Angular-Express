@@ -7,3 +7,5 @@ export * from './carousel';
 export * from './category-card';
 export * from './search';
 export * from './user-buttons';
+export * from './pagination';
+export * from './filters';

@@ -8,7 +8,8 @@
     border-right: 20px solid transparent;
     border-left: 20px solid transparent;
     background-clip: content-box;
-    filter: brightness(50%)
+    filter: brightness(50%);
+    border-radius: 50px;
 }
 
 .category-card:hover {

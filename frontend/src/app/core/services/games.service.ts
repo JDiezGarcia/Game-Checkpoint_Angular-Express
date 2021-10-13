@@ -10,11 +10,12 @@ import { map } from 'rxjs/operators';
 export class GamesService {
   constructor(private apiService: ApiService) {}
 
-  query(config: GameFilters): Observable<{ games: Game[]; gameCount: number }> {
+  query(config: GameFilters): Observable<{ games: Game[]; gamesCount: number }> {
     return this.apiService
       .get('/games', new HttpParams({ fromObject: config as any }))
       .pipe(
         map((data) => {
+          console.log(data)
           return data;
         })
       );

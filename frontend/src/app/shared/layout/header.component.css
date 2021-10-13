@@ -18,7 +18,7 @@ header{
 }
 
 .search-bar{
-    flex-grow: 2;
+    width: 600px;
     align-self: center;
     margin: 10px;
 }

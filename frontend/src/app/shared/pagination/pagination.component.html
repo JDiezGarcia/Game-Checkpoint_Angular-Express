@@ -1,0 +1,32 @@
+<div class="shop-pagination">
+  <nav aria-label="pagination" class="pagination-shop">
+    <ul class="pagination justify-content-end" style="cursor: pointer">
+      
+      <li [hidden]="!firstPage" class="page-item" (click)="select(firstPage)">
+        <a class="page-link">First</a>
+      </li>
+
+      <li [hidden]="!previousPage" class="page-item" (click)="select(previousPage)">
+        <a
+          class="page-link"
+          >{{previousPage}}</a
+        >
+      </li>
+
+      <li class="page-item active">
+        <a class="page-link">{{actualPage}}</a>
+      </li>
+
+      <li [hidden]="!nextPage" class="page-item" (click)="select(nextPage)">
+        <a
+          class="page-link"
+          >{{nextPage}}</a
+        >
+      </li>
+
+      <li [hidden]="!lastPage"class="page-item" (click)="select(lastPage)">
+        <a class="page-link">Last</a>
+      </li>
+    </ul>
+  </nav>
+</div>

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, EventEmitter, Output} from '@angular/core';
 
 import { Game, GameListConfig, GamesService, GameFilters } from '../../core';
 @Component({
@@ -8,12 +8,11 @@ import { Game, GameListConfig, GamesService, GameFilters } from '../../core';
 })
 export class GameListComponent {
   constructor(private gamesService: GamesService) {}
-
+  @Output() setTotalGame = new EventEmitter();
   @Input()
   set config(config: GameListConfig) {
     if (config) {
       this.query = config.filters;
-      this.currentPage = 1;
       this.loadGames();
     }
   }
@@ -21,11 +20,8 @@ export class GameListComponent {
   query!: GameFilters;
   results: Game[] = [];
   loading: boolean = false;
-  currentPage: number = 1;
-  totalPages: Array<number> = [1];
 
   setPageTo(pageNumber: number) {
-    this.currentPage = pageNumber;
     this.loadGames();
   }
 
@@ -33,13 +29,10 @@ export class GameListComponent {
     this.loading = true;
     this.results = [];
 
-    if (this.query.limit) {
-      this.query.offset = this.query.limit * (this.currentPage - 1);
-    }
-
     this.gamesService.query(this.query).subscribe((data) => {
       this.loading = false;
       this.results = data.games;
+      this.setTotalGame.emit(data.gamesCount);
       // Used from http://www.jstips.co/en/create-range-0...n-easily-using-one-line/
       //this.totalPages = Array.from(new Array(Math.ceil(data.gameCount / this.limit)), (val, index) => index + 1);
     });

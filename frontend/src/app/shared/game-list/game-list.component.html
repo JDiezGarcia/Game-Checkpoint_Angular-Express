@@ -1,19 +1,14 @@
 <div class="row card-list">
-  <app-game-card *ngFor="let game of results" [game]="game" class="col-4 game-card">
+  <app-game-card
+    *ngFor="let game of results"
+    [game]="game"
+    class="col-4 game-card"
+  >
   </app-game-card>
 </div>
 
 <div class="app-game-card" [hidden]="!loading">Loading articles...</div>
 
-<div class="app-game-card" [hidden]="loading || results.length">
-  No articles are here... yet.
+<div class="app-game-card" [hidden]="results.length || !query.query">
+  LAMENTAMOS QUE NO SE HAYA ENCONTRADO NINGÚN RESULTADO PARA {{ query.query }}
 </div>
-
-<nav [hidden]="loading || totalPages.length <= 1">
-  <ul class="pagination">
-    <li class="page-item" [ngClass]="{ active: pageNumber === currentPage }" *ngFor="let pageNumber of totalPages"
-      (click)="setPageTo(pageNumber)">
-      <a class="page-link">{{ pageNumber }}</a>
-    </li>
-  </ul>
-</nav>

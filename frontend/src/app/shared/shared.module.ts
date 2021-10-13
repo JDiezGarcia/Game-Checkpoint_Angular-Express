@@ -11,6 +11,8 @@ import { CarouselComponent } from './carousel/carousel.component';
 import { CategoryCardComponent } from './category-card/category-card.component';
 import { SearchBarComponent } from './search/search-bar.component';
 import { UserButtonsComponent } from './user-buttons/user-buttons.component';
+import { PaginationComponent } from './pagination/pagination.component';
+import { FiltersComponent } from './filters/filters.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +22,9 @@ import { UserButtonsComponent } from './user-buttons/user-buttons.component';
     CarouselComponent,
     CategoryCardComponent,
     SearchBarComponent,
-    UserButtonsComponent
+    UserButtonsComponent,
+    PaginationComponent,
+    FiltersComponent
   ],
   imports: [
     CommonModule,
@@ -37,6 +41,8 @@ import { UserButtonsComponent } from './user-buttons/user-buttons.component';
     CategoryCardComponent,
     SearchBarComponent,
     UserButtonsComponent,
+    PaginationComponent,
+    FiltersComponent,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,

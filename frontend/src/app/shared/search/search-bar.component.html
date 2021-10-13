@@ -3,11 +3,36 @@
     <input
       class="form-control mr-sm-2"
       type="search"
+      #query
+      (keyup)="searchItems(query.value)"
       placeholder="Search"
       aria-label="Search"
+      (search)="removeItems()"
     />
-    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+    <button class="btn btn-outline-success my-2 my-sm-0"  (click)="redirectGames(query.value)" type="submit">
       <i class="fa fa-search"></i>
     </button>
   </div>
 </form>
+<!--NG-HIDE-->
+<div [hidden]="noQuery" class="card overflow-auto search-items">
+  <span [hidden]="!noMatch && !noQuery">No hay resultados de la busqueda</span>
+  <ul [hidden]="noMatch" class="list-group list-group-flush">
+    
+    <li *ngFor="let game of searchGames" class="list-group-item game-item" (click)="redirectDetails(game.slug)">
+      <div class="row">
+        <div class="col-4 img-search">
+          <img src="{{game.img}}" />
+        </div>
+        <div class="col-8">
+          <div class="row">
+            <div style="font-size: 18px" class="col">{{game.name}}</div>
+          </div>
+          <div class="row">
+            <div style="font-weight: bold" class="col">bottones</div>
+          </div>
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>

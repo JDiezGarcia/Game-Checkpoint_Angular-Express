@@ -1,0 +1,30 @@
+.search-items{ 
+    width: inherit;
+    overflow: visible;
+    max-height: 300px; 
+    position: absolute; 
+    z-index: 5;
+}
+
+.img-search img{
+    width: 50%;
+}
+
+.game-item{
+    cursor: pointer;
+}
+.game-item:hover{
+    background-color: grey;
+}
+
+.btn{
+    color: white;
+    background-color: purple;
+    border: none;
+}
+
+.btn:hover{
+    color: purple;
+    border: solid 1px purple;
+    background-color: white;
+}

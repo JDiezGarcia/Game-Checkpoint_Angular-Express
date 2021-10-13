@@ -1,1 +1,9 @@
-<app-game-list [config]='listConfig'></app-game-list>
+<div class="games-content">
+    <div class="colF">
+        <app-filters></app-filters>
+    </div>
+    <div class="colG">
+        <app-game-list (setTotalGame)="setTotalGame($event)" [config]='listConfig'></app-game-list>
+        <app-pagination (pageSelect)="setNewPage($event)" [totalPages]='totalPages' class="pagination"></app-pagination>
+    </div>
+</div>
