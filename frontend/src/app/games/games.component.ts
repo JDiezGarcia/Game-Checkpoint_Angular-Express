@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { GameListConfig } from '../core';
+import { GameFilters, GameListConfig } from '../core';
 @Component({
   selector: 'app-games-page',
   templateUrl: './games.component.html',
@@ -13,6 +13,7 @@ export class GamesComponent implements OnInit {
     ) {}
 
   listConfig!: GameListConfig;
+  filterConfig!: GameFilters;
 
   totalPages!: number;
 
@@ -20,6 +21,7 @@ export class GamesComponent implements OnInit {
     this.totalPages = Math.ceil(total / this.listConfig.filters.limit);
   }
 
+  //--[TO ADD THE NEW PAGE TO PARAMS]--\\
   setNewPage(actualPage: number){
     let page: Params = { page: actualPage}
     this.router.navigate(
@@ -31,6 +33,37 @@ export class GamesComponent implements OnInit {
       });
   }
 
+  handleFilters(actualFilter: String){
+    let newFilters: Params = {};
+    let remove: Boolean = false;
+    let oldFilters: String[] = this.route.snapshot.queryParamMap.getAll('categories');
+    console.log(oldFilters)
+    if(oldFilters.length > 0){
+      
+    for (let i = 0; i < oldFilters.length; i++) {
+
+      if(oldFilters[i] === actualFilter){
+        oldFilters.splice(i, 1);
+        remove = true;
+      }
+    }
+      if(!remove){
+        oldFilters.push(actualFilter);
+        console.log(oldFilters)
+      }
+      newFilters = { categories: oldFilters};
+    }else{
+      newFilters = { categories: [actualFilter] };
+    }
+    this.router.navigate(
+      [],
+      {
+        relativeTo: this.route,
+        queryParams: newFilters,
+        queryParamsHandling: 'merge',
+      });
+  }
+
   ngOnInit() {
     this.listConfig = {
       type: "",
@@ -39,9 +72,10 @@ export class GamesComponent implements OnInit {
         offset: 0
       },
     };
+    //--[TO REFRESH ACTUAL ROUTE]--\\
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     this.route.queryParamMap.subscribe((params) => {
-      console.log(typeof parseInt(params.get('page') as string))
+      let filters: GameFilters;
       let page: number = (parseInt(params.get('page') as string));
       let offset: number;
       if(page > 0){
@@ -49,12 +83,14 @@ export class GamesComponent implements OnInit {
       }else{
         offset = NaN;
       }
-      this.listConfig.filters = {
+      filters = {
         categories: params.getAll('categories') || [],
         limit: parseInt(params.get('limit')as string) || 3,
         offset: offset || 0,
         query: params.get('query') || '',
       };
+      this.listConfig.filters = filters;
+      this.filterConfig = filters;
     });
   }
 }

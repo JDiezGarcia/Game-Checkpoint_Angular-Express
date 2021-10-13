@@ -3,18 +3,17 @@
     <h3>Categories</h3>
     <div class="form-check filters-genres">
       <!--NGFOR-->
-      <div class="category-filter">
+      <div *ngFor="let category of filters" class="category-filter">
         <input
           class="form-check-input"
           type="checkbox"
-          value=""
+          value="{{ category._id }}"
+          [checked]="category.check"
+          (click)="clickOnFilter( category._id )"
         />
-        <label
-          class="form-check-label"
-          for=""
-        >
-          name</label
-        ><span>(total)</span>
+        <label class="form-check-label" for="{{ category._id }}">
+          {{ category._id }}</label
+        ><span>({{ category.count }})</span>
       </div>
     </div>
   </div>

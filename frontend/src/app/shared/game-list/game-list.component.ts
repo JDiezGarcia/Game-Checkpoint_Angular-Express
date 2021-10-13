@@ -21,10 +21,6 @@ export class GameListComponent {
   results: Game[] = [];
   loading: boolean = false;
 
-  setPageTo(pageNumber: number) {
-    this.loadGames();
-  }
-
   loadGames() {
     this.loading = true;
     this.results = [];

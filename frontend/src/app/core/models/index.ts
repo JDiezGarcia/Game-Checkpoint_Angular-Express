@@ -4,3 +4,4 @@ export * from './user.model';
 export * from './comment.model';
 export * from './carousel-config.model';
 export * from './game-filters.model';
+export * from './category.model';

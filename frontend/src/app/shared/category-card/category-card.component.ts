@@ -1,4 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Category } from '../../core';
 
 @Component({
   selector: 'app-category-card',
@@ -10,7 +11,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 })
 export class CategoryCardComponent {
   @Output() categorySelect = new EventEmitter();
-  @Input() category?: String;
+  @Input() category!: Category;
   
   color!: String;
 
@@ -18,11 +19,11 @@ export class CategoryCardComponent {
     this.color = this.getCategoryColor();
   }
   getCategoryColor() {
-    if (!this.category) {
+    if (!this.category?._id) {
       return '#fff';
     }
 
-    var hash: number = this.category.split('').reduce((a, b) => {
+    var hash: number = this.category._id.split('').reduce((a, b) => {
       a = (a << 5) - a + b.charCodeAt(0);
       return a & a;
     }, 0);
@@ -31,6 +32,6 @@ export class CategoryCardComponent {
     return '#' + color;
   }
   select(){
-    this.categorySelect.emit(this.category);
+    this.categorySelect.emit(this.category._id);
   }
 }

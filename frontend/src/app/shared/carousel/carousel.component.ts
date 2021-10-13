@@ -6,7 +6,7 @@ import {
   CarouselConfig,
   CategoriesService,
   GameFilters,
-  GameListConfig
+  Category
 } from '../../core';
 
 @Component({
@@ -32,11 +32,12 @@ export class CarouselComponent {
   filters?: GameFilters;
   results!: Game[] | String[];
   slideGames!: Game[][];
-  slideCategories!: String[][];
+  slideCategories!: Category[][];
 
   loadSlides(type: String) {
     if (type === 'categories') {
       this.categoriesService.getAll().subscribe((data) => {
+        console.log(data)
         this.slideCategories = this.splitToGroups(data);
       });
     } else if (type === 'games') {
