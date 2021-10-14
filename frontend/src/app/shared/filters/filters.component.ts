@@ -28,6 +28,7 @@ export class FiltersComponent {
   loadFilters(){
     this.categoriesService.getAll(this.query).subscribe((data) =>{
       this.filters = data;
+      this.filters.sort((a, b) => a._id < b._id ? -1 : a._id > b._id ? 1 : 0)
       for (let i = 0; i < this.filters.length; i++) {
         this.checks.forEach(filter => {
           if(this.filters[i]._id === filter ){
@@ -41,4 +42,5 @@ export class FiltersComponent {
   clickOnFilter(filter: String){
     this.handleFilters.emit(filter);
   }
+
 }
