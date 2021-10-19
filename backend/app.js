@@ -4,6 +4,7 @@ var express = require('express'),
 	mongoose = require('mongoose')
 
 require('dotenv').config({ path: './config/config.env' });
+
 var app = express();
 
 app.use(cors());
@@ -19,7 +20,7 @@ mongoose.set('debug', true);
 require('./models/User');
 require('./models/Comment');
 require('./models/Game');
-// require('./config/passport');
+require('./config/passport');
 
 app.use(require('./routes'));
 

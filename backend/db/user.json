@@ -1,95 +1,45 @@
 {
     "users": [
         {
-            "_id": "00000001",
             "email": "jdiez.estacio@gmail.com",
             "user": "jdiez",
             "img": "jdiez.png",
             "gamesFollow": [
-                {
-                    "game": "1578548124",
-                    "status": "finished"
-                },
-                {
-                    "game": "685203127",
-                    "status": "playing"
-                },
-                {
-                    "game": "665170522",
-                    "status": "pending"
-                }
             ],
             "fav": [
-                "665170522"
             ],
             "followers": [
-                "00000002",
-                "00000003"
             ],
             "follow": [
-                "00000002"
             ],
             "comments": [
-            ]
+            ],
+            "salt": "f66b2a69d32ea2f0e3ca485802c09e5b",
+            "hash": "69095d0f9d41db24e15e7a42034b83e28366d63005e23538fb38202477fc1e66a0ac600bbb8758993532b27ec10fc5cd6a4927812d61402e23fcf8ab215e3f68bd3438fbede2a02ef54d7dc95890a99652e9aa420c02427a8025a2997e7bd72da212ea72bf8c9a6cf7736f9b5dea5571b853b913aea05ca2ba1ac86a8e20a24c233a63bf24b94e7674aa02aa5e595a5e4ecf48f72c1820e53117e4419cfe892cce822ebd08e2a7b9b8e82d0c3fd2aaf24b9ffac07f35e2d403244c6544a4b1b324fb8da3528f17ba2979094271cf2e8396130b15304b9a955e1493348c5afe86529f1d854171fce58fa151d6306694e8bb70ed42912ac5eca9e8c8d4318b5ef40fc809b95dafb9c4a313dabbf35be041dc8077db8689989e968d8bfd78e6e0c4153bd13fefbaaba3ab776f64c34cb0cfc348f49861bdfd27e21b6ded97ef9b847a8c1550fc55b823626c8ab9a03c0d4777ce977e75eb43a2ab50fee566bbbdd6a2b13b4b479b7cb3578498adc8b3d51be6a0876f3d7176218ba7297a6abfcafe08473c552647a29bfa830937cd11063a70c43e65dbc7fa0dfebf5f8c7ef10cbc808068fb5159c2355959f9f5899ad55f5dd7f159e3afac70101f540ce6eb9e89def439ccc5cc332a3143f4c7ba11928d1f4841940e6f629e6430c863bbb36170973e5cb49e8a47bd478126cdc47a7bba151e99c163d8992356835ab6f91bde69"
         },
         {
-            "_id": "00000002",
             "email": "fco.javier.diez.garcia@gmail.com",
             "user": "fjdiezgarcia",
             "img": "fjdiezgarcia.png",
-            "gamesFollow": [
-                {
-                    "game": "1578548124",
-                    "status": "finished"
-                },
-                {
-                    "game": "685203127",
-                    "status": "pending"
-                },
-                {
-                    "game": "665170522",
-                    "status": "finished"
-                }
-            ],
-            "fav": [
-                "665170522"
-            ],
-            "followers": [
-                "00000001"
-            ],
+            "gamesFollow": [],
+            "fav": [],
+            "followers": [],
             "follow": [],
-            "comments": [
-            ]
+            "comments": [],
+            "salt": "f66b2a69d32ea2f0e3ca485802c09e5b",
+            "hash": "69095d0f9d41db24e15e7a42034b83e28366d63005e23538fb38202477fc1e66a0ac600bbb8758993532b27ec10fc5cd6a4927812d61402e23fcf8ab215e3f68bd3438fbede2a02ef54d7dc95890a99652e9aa420c02427a8025a2997e7bd72da212ea72bf8c9a6cf7736f9b5dea5571b853b913aea05ca2ba1ac86a8e20a24c233a63bf24b94e7674aa02aa5e595a5e4ecf48f72c1820e53117e4419cfe892cce822ebd08e2a7b9b8e82d0c3fd2aaf24b9ffac07f35e2d403244c6544a4b1b324fb8da3528f17ba2979094271cf2e8396130b15304b9a955e1493348c5afe86529f1d854171fce58fa151d6306694e8bb70ed42912ac5eca9e8c8d4318b5ef40fc809b95dafb9c4a313dabbf35be041dc8077db8689989e968d8bfd78e6e0c4153bd13fefbaaba3ab776f64c34cb0cfc348f49861bdfd27e21b6ded97ef9b847a8c1550fc55b823626c8ab9a03c0d4777ce977e75eb43a2ab50fee566bbbdd6a2b13b4b479b7cb3578498adc8b3d51be6a0876f3d7176218ba7297a6abfcafe08473c552647a29bfa830937cd11063a70c43e65dbc7fa0dfebf5f8c7ef10cbc808068fb5159c2355959f9f5899ad55f5dd7f159e3afac70101f540ce6eb9e89def439ccc5cc332a3143f4c7ba11928d1f4841940e6f629e6430c863bbb36170973e5cb49e8a47bd478126cdc47a7bba151e99c163d8992356835ab6f91bde69"
         },
         {
-            "_id": "00000003",
             "email": "wolfsarter@gmail.com",
             "user": "wolfsarter",
             "img": "wolfsarter.png",
-            "gamesFollow": [
-                {
-                    "game": "1578548124",
-                    "status": "finished"
-                },
-                {
-                    "game": "685203127",
-                    "status": "finished"
-                },
-                {
-                    "game": "665170522",
-                    "status": "finished"
-                }
-            ],
-            "fav": [
-                "665170522","1578548124","685203127"
-            ],
-            "followers": [
-                "00000001","00000002"
-            ],
-            "follow": ["00000001", "00000002"],
-            "comments": [
-                "000000001"
-            ]
+            "gamesFollow": [],
+            "fav": [],
+            "followers": [],
+            "follow": [],
+            "comments": [],
+            "salt": "f66b2a69d32ea2f0e3ca485802c09e5b",
+            "hash": "69095d0f9d41db24e15e7a42034b83e28366d63005e23538fb38202477fc1e66a0ac600bbb8758993532b27ec10fc5cd6a4927812d61402e23fcf8ab215e3f68bd3438fbede2a02ef54d7dc95890a99652e9aa420c02427a8025a2997e7bd72da212ea72bf8c9a6cf7736f9b5dea5571b853b913aea05ca2ba1ac86a8e20a24c233a63bf24b94e7674aa02aa5e595a5e4ecf48f72c1820e53117e4419cfe892cce822ebd08e2a7b9b8e82d0c3fd2aaf24b9ffac07f35e2d403244c6544a4b1b324fb8da3528f17ba2979094271cf2e8396130b15304b9a955e1493348c5afe86529f1d854171fce58fa151d6306694e8bb70ed42912ac5eca9e8c8d4318b5ef40fc809b95dafb9c4a313dabbf35be041dc8077db8689989e968d8bfd78e6e0c4153bd13fefbaaba3ab776f64c34cb0cfc348f49861bdfd27e21b6ded97ef9b847a8c1550fc55b823626c8ab9a03c0d4777ce977e75eb43a2ab50fee566bbbdd6a2b13b4b479b7cb3578498adc8b3d51be6a0876f3d7176218ba7297a6abfcafe08473c552647a29bfa830937cd11063a70c43e65dbc7fa0dfebf5f8c7ef10cbc808068fb5159c2355959f9f5899ad55f5dd7f159e3afac70101f540ce6eb9e89def439ccc5cc332a3143f4c7ba11928d1f4841940e6f629e6430c863bbb36170973e5cb49e8a47bd478126cdc47a7bba151e99c163d8992356835ab6f91bde69"
         }
     ]
 }
