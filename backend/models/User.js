@@ -5,6 +5,7 @@ var crypto = require('crypto');
 var jwt = require('jsonwebtoken');
 var secret = process.env.JWT_SECRET;
 var Populate = require('../db/populate');
+const { finished } = require('stream');
 
 //--[User Schema]--\\
 var UserSchema = new mongoose.Schema({
@@ -143,4 +144,28 @@ UserSchema.methods.isFollowing = function (id) {
     });
 };
 
+
+UserSchema.methods.doGameFollow = function (id){
+    let follow = true;
+    this.gamesFollow.find(o => {
+        if(String(o._id) === String(id)){
+            follow = false;
+        }
+
+    })
+    if (follow){
+        this.gamesFollow.push({
+            _id: id,
+            status: "pending",
+            finished: 0,
+        })
+    }
+    return this.save();
+}
+
+UserSchema.methods.undoGameFollow = function (id) {
+    console.log(this.gamesFollow, String(id))
+    this.gamesFollow.pull({_id: id});
+    return this.save();
+};
 mongoose.model('User', UserSchema);

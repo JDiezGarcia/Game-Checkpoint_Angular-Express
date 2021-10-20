@@ -1,6 +1,8 @@
 var router = require('express').Router();
 var mongoose = require('mongoose');
 var Game = mongoose.model('Game');
+var auth = require('../auth'); 
+var User = mongoose.model('User');
 
 
 router.param('game', async function (req, res, next, slug) {
@@ -55,25 +57,25 @@ router.get('/details/:game', function (req, res, next) {
 });
 
 router.post('/:game/follow', auth.required, function (req, res, next) {
-    var profileId = req.profile._id;
+    let gameFollow = req.game._id;
 
     User.findById(req.payload.id).then(function (user) {
         if (!user) { return res.sendStatus(401); }
 
-        return user.follow(profileId).then(function () {
-            return res.json({ profile: req.profile.toProfileJSONFor(user) });
+        return user.doGameFollow(gameFollow).then(function () {
+            return res.json({ isFollow: true });
         });
     }).catch(next);
 });
 
 router.delete('/:game/follow', auth.required, function (req, res, next) {
-    var gameFollow = req.game._id;
+    let gameUnfollow = req.game._id;
 
     User.findById(req.payload.id).then(function (user) {
         if (!user) { return res.sendStatus(401); }
 
-        return user.unfollow(profileId).then(function () {
-            return res.json({ profile: req.profile.toProfileJSONFor(user) });
+        return user.undoGameFollow(gameUnfollow).then(function () {
+            return res.json({ isFollow: false });
         });
     }).catch(next);
 });

@@ -1,7 +1,6 @@
 {
     "games": [
         {
-            "_id": "1578548124",
             "slug": "gothic-1578548124",
             "name": "Gothic",
             "description": "desc-gothic",
@@ -12,13 +11,11 @@
             "img": "resources/img/games/gothic-cover.jpg",
             "baseHours": 60,
             "universe": "GOTHIC-001",
-            "rating": 0,
+            "rating": [],
             "comments": [
-                "000100000"
             ]
         },
         {
-            "_id": "685203127",
             "slug": "gothic-2-685203127",
             "name": "Gothic 2",
             "description": "desc-gothic-2",
@@ -29,13 +26,11 @@
             "img": "resources/img/games/gothic2-cover.jpg",
             "baseHours": 60,
             "universe": "GOTHIC-001",
-            "rating": 0,
+            "rating": [],
             "comments": [
-                "000200000"
             ]
         },
         {
-            "_id": "665170522",
             "slug": "gothic-3-665170522",
             "name": "Gothic 3",
             "description": "desc-gothic-3",
@@ -47,13 +42,11 @@
             "img": "resources/img/games/gothic3-cover.jpg",
             "baseHours": 60,
             "universe": "GOTHIC-001",
-            "rating": 0,
+            "rating": [],
             "comments": [
-                "000300000"
             ]
         },
         {
-            "_id": "665180522",
             "slug": "zelda-breath-of-the-wild-665180522",
             "name": "Zelda: Breath of the Wild",
             "description": "desc-zelda-botw",
@@ -65,7 +58,7 @@
             "img": "resources/img/games/zeldabreathofthewild-cover.jpg",
             "baseHours": 120,
             "universe": "ZELDA-001",
-            "rating": 0,
+            "rating": [],
             "comments": [
             ]
         }
