@@ -1,7 +1,7 @@
 var router = require('express').Router();
 var mongoose = require('mongoose');
 var Game = mongoose.model('Game');
-var auth = require('../auth'); 
+var auth = require('../auth');
 var User = mongoose.model('User');
 
 
@@ -15,6 +15,18 @@ router.param('game', async function (req, res, next, slug) {
         }).catch(next);
 });
 
+router.post('/game', auth.required, function (req, res, next) {
+    User.findById(req.payload.id).then(function (user) {
+        if (!user) { return res.sendStatus(401); }
+
+        let game = new Game(req.body.game);
+        console.log(game)
+        return game.save().then(function () {
+            return res.json({ message: "Creado con Exito" });
+        });
+    }).catch(next);
+});
+
 router.get('/games', async function (req, res) {
 
     var query = {};
@@ -24,7 +36,7 @@ router.get('/games', async function (req, res) {
         query.categories = { "$all": req.query.categories };
     }
     if (typeof req.query.query !== 'undefined') {
-        query.name = { $regex: ".*"+ req.query.query +".*", $options: "i"};
+        query.name = { $regex: ".*" + req.query.query + ".*", $options: "i" };
     }
 
 
@@ -80,17 +92,38 @@ router.delete('/:game/follow', auth.required, function (req, res, next) {
     }).catch(next);
 });
 
-router.delete('/:game/favorite', auth.required, function (req, res, next) {
-    var articleId = req.article._id;
+router.post('/:game/favorite', auth.required, function (req, res, next) {
+    var gameID = req.game._id;
 
     User.findById(req.payload.id).then(function (user) {
         if (!user) { return res.sendStatus(401); }
-
-        return user.unfavorite(articleId).then(function () {
-            return req.article.updateFavoriteCount().then(function (article) {
-                return res.json({ article: article.toJSONFor(user) });
-            });
+        return user.favorite(gameID).then(function () {
+            return res.json({ game: req.game.toDetailsJSONFor(user) });
         });
+    }).catch(next);
+});
+
+router.delete('/:game/favorite', auth.required, function (req, res, next) {
+    var gameID = req.game._id;
+
+    User.findById(req.payload.id).then(function (user) {
+        if (!user) { return res.sendStatus(401); }
+        return user.unfavorite(gameID).then(function () {
+            return res.json({ game: req.game.toDetailsJSONFor(user) });
+        });
+    }).catch(next);
+});
+
+router.post('/:game/changeStatus', auth.required, function (req, res, next) {
+    var gameID = req.game._id;
+    let status = req.query.newStatus;
+    User.findById(req.payload.id).then(function (user) {
+        if (!user) { return res.sendStatus(401); }
+        if (status !== undefined) {
+            return user.changeStatus(gameID, status).then(function () {
+                return res.json({ game: req.game.toDetailsJSONFor(user) });
+            });
+        }
     }).catch(next);
 });
 

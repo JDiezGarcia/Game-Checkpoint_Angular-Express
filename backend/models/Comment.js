@@ -2,7 +2,6 @@ var mongoose = require('mongoose');
 var Populate = require('../db/populate');
 
 var CommentSchema = new mongoose.Schema({
-  _id: String,
   title: String,
   content: String,
   replies: [{ type: String, ref: 'Comment' }],
@@ -23,4 +22,11 @@ CommentSchema.methods.toCommentJSONFor = function(){
   };
 };
 
+CommentSchema.methods.assembleComment = function(parts, userID){
+  this.title = parts.title;
+  this.body = parts.content
+  this.author = userID;
+  console.log("a")
+  return this;
+}
 mongoose.model('Comment', CommentSchema);

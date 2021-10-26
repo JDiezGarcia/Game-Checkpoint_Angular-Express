@@ -4,27 +4,27 @@ var slug = require('slug');
 var Populate = require('../db/populate');
 
 var GameSchema = new mongoose.Schema({
-    slug: { type: String, lowercase: true, unique: true },
+    slug: { type: String, lowercase: true},
     name: String,
     description: String,
     categories: [String],
     img: String,
     baseHours: Number,
-    universe: { type: mongoose.Schema.Types.ObjectId, ref: 'Universe' },
-    rating: Number,
+    universe: String,
+    rating: [
+        {
+            rate: Number,
+            user: {type: mongoose.Schema.Types.ObjectId, ref: 'User'}}
+    ],
     comments: [{ type: String, ref: 'Comment' }]
 
 }, { timestamps: true });
 
 GameSchema.plugin(uniqueValidator, { message: 'is already taken' });
 
-
 GameSchema.pre('findOne', Populate('comments'));
 
 GameSchema.pre('validate', function (next) {
-    if (!this._id) {
-        this._id = Math.random() * Math.pow(36, 6) | 0;
-    }
     if (!this.slug) {
         this.slugify();
     }
@@ -32,7 +32,7 @@ GameSchema.pre('validate', function (next) {
 });
 
 GameSchema.methods.slugify = function () {
-    this.slug = slug(this.name) + '-' + this._id.toString(36);
+    this.slug = slug(this.name) + '-' + String(this._id);
 };
 
 GameSchema.methods.toDetailsJSONFor = function (user) {
@@ -48,20 +48,21 @@ GameSchema.methods.toDetailsJSONFor = function (user) {
         comments: this.comments.map(comment => {
             return comment.toCommentJSONFor();
         }),
-        isFollow: user ? user.isFollowing(this._id) : false,
-        isFavorite: user ? user.isFollowing(this._id) : false
+        status: user ? user.checkStatus(this._id) : false,
+        isFavorite: user ? user.isFavorite(this._id) : false
     };
 };
 
-GameSchema.methods.toListJSONFor = function () {
+GameSchema.methods.toListJSONFor = function (user) {
+    console.log(user.checkStatus(this._id))
     return {
         slug: this.slug,
         name: this.name,
         categories: this.categories,
         img: this.img,
         rating: this.rating,
-        isFollow: user ? user.isFollowing(this._id) : false,
-        isFavorite: user ? user.isFollowing(this._id) : false
+        status: user ? user.checkStatus(this._id) : false,
+        isFavorite: user ? user.isFavorite(this._id) : false
     };
 };
 

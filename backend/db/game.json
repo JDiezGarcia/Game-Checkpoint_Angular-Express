@@ -1,7 +1,6 @@
 {
     "games": [
         {
-            "slug": "gothic-1578548124",
             "name": "Gothic",
             "description": "desc-gothic",
             "categories": [
@@ -16,7 +15,6 @@
             ]
         },
         {
-            "slug": "gothic-2-685203127",
             "name": "Gothic 2",
             "description": "desc-gothic-2",
             "categories": [
@@ -31,7 +29,6 @@
             ]
         },
         {
-            "slug": "gothic-3-665170522",
             "name": "Gothic 3",
             "description": "desc-gothic-3",
             "categories": [
@@ -47,7 +44,6 @@
             ]
         },
         {
-            "slug": "zelda-breath-of-the-wild-665180522",
             "name": "Zelda: Breath of the Wild",
             "description": "desc-zelda-botw",
             "categories": [

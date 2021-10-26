@@ -15,7 +15,8 @@ var UserSchema = new mongoose.Schema({
     img: String,
     gamesFollow: [{
         game: { type: mongoose.Schema.Types.ObjectId, ref: 'Game' },
-        status: String
+        status: String,
+        finished: Number
     }],
     fav: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Game' }],
     followers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
@@ -52,6 +53,17 @@ UserSchema.methods.toThumbnailJSONFor = function () {
     };
 };
 
+//--[Auth Serializer]--\\
+UserSchema.methods.toAuthJSON = function(){
+    return {
+    user: this.user,
+    email: this.email,
+    token: this.generateJWT(),
+    name: this.name,
+    img: this.img
+  };
+};
+
 UserSchema.plugin(uniqueValidator, { message: 'is already taken.' });
 
 //--[Method Same Pass]--\\
@@ -74,21 +86,10 @@ UserSchema.methods.generateJWT = function() {
   }, secret);
 };
 
-//--[Auth Serializer]--\\
-UserSchema.methods.toAuthJSON = function(){
-    return {
-    user: this.user,
-    email: this.email,
-    token: this.generateJWT(),
-    name: this.name,
-    img: this.img
-  };
-};
-
 //--[Method Set Game Fav]--\\
 UserSchema.methods.favorite = function (id) {
-    if (this.favorites.indexOf(id) === -1) {
-        this.favorites.push(id);
+    if (this.fav.indexOf(id) === -1) {
+        this.fav.push(id);
     }
 
     return this.save();
@@ -96,13 +97,13 @@ UserSchema.methods.favorite = function (id) {
 
 //--[Method Remove Game Fav]--\\
 UserSchema.methods.unfavorite = function (id) {
-    this.favorites.remove(id);
+    this.fav.remove(id);
     return this.save();
 };
 
 //--[Method Check if Game is on Favorites]--\\
 UserSchema.methods.isFavorite = function (id) {
-    return this.favorites.some(function (favoriteId) {
+    return this.fav.some(function (favoriteId) {
         return favoriteId.toString() === id.toString();
     });
 };
@@ -144,7 +145,7 @@ UserSchema.methods.isFollowing = function (id) {
     });
 };
 
-
+//--[Method Follow Game]--\\
 UserSchema.methods.doGameFollow = function (id){
     let follow = true;
     this.gamesFollow.find(o => {
@@ -157,15 +158,41 @@ UserSchema.methods.doGameFollow = function (id){
         this.gamesFollow.push({
             _id: id,
             status: "pending",
-            finished: 0,
+            finished: 0
         })
     }
     return this.save();
 }
 
+//--[Method Remove Follow Game]
 UserSchema.methods.undoGameFollow = function (id) {
-    console.log(this.gamesFollow, String(id))
     this.gamesFollow.pull({_id: id});
     return this.save();
 };
+
+//--[Method Change Status]--\\
+UserSchema.methods.changeStatus = function (id, newStatus) {
+    this.gamesFollow.find(game => {
+        if (String(game._id) === String(id)) {
+            game.status = newStatus;
+            if(newStatus === "finished"){
+                game.finished += 1;
+            }
+        }
+
+    })
+    return this.save();
+};
+
+//--[Method Check what is the Status of the Game]--\\
+UserSchema.methods.checkStatus = function (id) {
+    let status;
+    this.gamesFollow.some(function (game) {
+        if(game.id.toString() === id.toString()){
+            status = game.status;
+        };
+    });
+    return status;
+};
+
 mongoose.model('User', UserSchema);

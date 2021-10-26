@@ -4,6 +4,7 @@ router.use('/', require('./games'));
 router.use('/categories', require('./categories'));
 router.use('/', require('./users'));
 router.use('/profiles', require('./profiles'));
+router.use('/comments', require('./comments'));
 
 router.use(function(err, req, res, next){
   if(err.name === 'ValidationError'){
