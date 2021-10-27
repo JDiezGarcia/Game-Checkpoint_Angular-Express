@@ -16,7 +16,7 @@ var GameSchema = new mongoose.Schema({
             rate: Number,
             user: {type: mongoose.Schema.Types.ObjectId, ref: 'User'}}
     ],
-    comments: [{ type: String, ref: 'Comment' }]
+    comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }]
 
 }, { timestamps: true });
 

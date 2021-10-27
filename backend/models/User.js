@@ -5,7 +5,6 @@ var crypto = require('crypto');
 var jwt = require('jsonwebtoken');
 var secret = process.env.JWT_SECRET;
 var Populate = require('../db/populate');
-const { finished } = require('stream');
 
 //--[User Schema]--\\
 var UserSchema = new mongoose.Schema({
@@ -31,7 +30,6 @@ UserSchema.pre('findOne', Populate('comments'));
 
 //--[Profile Serializer]--\\
 UserSchema.methods.toProfileJSONFor = function (user) {
-    console.log(this._id.toString())
     return {
         email: this.email,
         user: this.user,
