@@ -12,8 +12,10 @@ var UserSchema = new mongoose.Schema({
     user: { type: String, lowercase: true, required: [true, "can't be blank"], match: [/^[a-zA-Z0-9]+$/, 'is invalid'], index: true },
     name: String,
     img: String,
+    respect: { type: Number, default: 0 },
+    title: { type: String, default: 'Noob' },
     gamesFollow: [{
-        game: { type: mongoose.Schema.Types.ObjectId, ref: 'Game' },
+        _id: { type: mongoose.Schema.Types.ObjectId, ref: 'Game' },
         status: String,
         finished: Number
     }],
@@ -33,6 +35,7 @@ UserSchema.methods.toProfileJSONFor = function (user) {
     return {
         email: this.email,
         user: this.user,
+        title: this.title,
         name: this.name,
         img: this.img || 'https://static.productionready.io/images/smiley-cyrus.jpg',
         comments: this.comments.map(comment => {
@@ -47,6 +50,7 @@ UserSchema.methods.toProfileJSONFor = function (user) {
 UserSchema.methods.toThumbnailJSONFor = function () {
     return {
         user: this.user,
+        title: this.title,
         img: this.img || 'https://static.productionready.io/images/smiley-cyrus.jpg',
     };
 };
@@ -88,6 +92,7 @@ UserSchema.methods.generateJWT = function() {
 UserSchema.methods.favorite = function (id) {
     if (this.fav.indexOf(id) === -1) {
         this.fav.push(id);
+        this.changeRespect(100);
     }
 
     return this.save();
@@ -96,6 +101,7 @@ UserSchema.methods.favorite = function (id) {
 //--[Method Remove Game Fav]--\\
 UserSchema.methods.unfavorite = function (id) {
     this.fav.remove(id);
+    this.changeRespect(-100);
     return this.save();
 };
 
@@ -110,6 +116,7 @@ UserSchema.methods.isFavorite = function (id) {
 UserSchema.methods.doFollow = function (id) {
     if (this.follow.indexOf(id) === -1) {
         this.follow.push(id);
+        this.changeRespect(50);
     }
 
     return this.save();
@@ -119,6 +126,7 @@ UserSchema.methods.doFollow = function (id) {
 UserSchema.methods.newFollower = function (id){
     if (this.followers.indexOf(id) === -1) {
         this.followers.push(id);
+        this.changeRespect(100);
     }
 
     return this.save();
@@ -127,12 +135,14 @@ UserSchema.methods.newFollower = function (id){
 //--[Method Unfollow User]--\\
 UserSchema.methods.undoFollow = function (id) {
     this.follow.remove(id);
+    this.changeRespect(-50);
     return this.save();
 };
 
 //--[Method Remove Follower]--\\
 UserSchema.methods.removeFollower = function (id) {
     this.followers.remove(id);
+    this.changeRespect(-100);
     return this.save();
 };
 
@@ -158,6 +168,7 @@ UserSchema.methods.doGameFollow = function (id){
             status: "pending",
             finished: 0
         })
+        this.changeRespect(100);
     }
     return this.save();
 }
@@ -165,6 +176,7 @@ UserSchema.methods.doGameFollow = function (id){
 //--[Method Remove Follow Game]
 UserSchema.methods.undoGameFollow = function (id) {
     this.gamesFollow.pull({_id: id});
+    this.changeRespect(-100);
     return this.save();
 };
 
@@ -175,6 +187,7 @@ UserSchema.methods.changeStatus = function (id, newStatus) {
             game.status = newStatus;
             if(newStatus === "finished"){
                 game.finished += 1;
+                this.changeRespect(200);
             }
         }
 
@@ -192,5 +205,23 @@ UserSchema.methods.checkStatus = function (id) {
     });
     return status;
 };
+
+UserSchema.methods.changeRespect = function (respect){
+    this.respect += respect
+    this.changeTitle();
+}
+
+UserSchema.methods.changeTitle = function () {
+    
+    this.title = 
+        this.respect >= 0 ? 'Noob': 
+        this.respect >= 1001 ? 'Player':
+        this.respect >= 10001 ? 'Gamer':
+        this.respect >= 100001 ? 'Pro':
+        this.respect >= 1000001 ? 'Completionist': 
+        "Hacker";
+
+}
+
 
 mongoose.model('User', UserSchema);

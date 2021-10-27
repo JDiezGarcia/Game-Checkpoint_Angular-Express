@@ -44,7 +44,8 @@ router.post('/game/:game', auth.required, function (req, res, next) {
         comment = await comment.assembleComment(req.body, user);
         return comment.save().then(function () {
             req.game.comments.push(comment);
-
+            user.changeRespect(100);
+            user.save();
             return req.game.save().then(function () {
                 res.json({ game: req.game.toDetailsJSONFor(user) });
             })
@@ -62,7 +63,8 @@ router.post('/user/:user', auth.required, async function (req, res, next) {
         comment = comment.assembleComment(req.body, user);
         return comment.save().then(function () {
             req.user.comments.push(comment);
-
+            user.changeRespect(100);
+            user.save();
             return req.user.save().then(function () {
                 res.json({ user: req.user.toProfileJSONFor(user) });
             });
@@ -84,6 +86,8 @@ router.post('/game/:game/:comment', auth.required, async function (req, res, nex
 
         return comment.save().then(function () {
             req.comment.replies.push(comment);
+            user.changeRespect(100);
+            user.save();
             return req.comment.save().then(function () {
                 Game.findById(req.game._id).then(function (game) {
                     res.json({ game: game.toDetailsJSONFor(user) });
@@ -109,7 +113,8 @@ router.post('/user/:user/:comment', auth.required, async function (req, res, nex
 
         return comment.save().then(function () {
             req.comment.replies.push(comment);
-
+            user.changeRespect(100);
+            user.save();
             return req.comment.save().then(function () {
                 User.findById(req.user._id).then(function (profile) {
                     res.json({ user: profile.toProfileJSONFor(user) });
@@ -127,6 +132,8 @@ router.delete('/game/:game/:comment', auth.required, async function (req, res, n
         if (String(req.comment.author._id) === req.payload.id) {
             if (req.comment.origin.length <= 0) {
                 req.game.comments.remove(req.comment._id);
+                user.changeRespect(-100);
+                user.save();
                 await req.game.save();
             } else {
                 await Comment.updateOne(
@@ -158,6 +165,8 @@ router.delete('/user/:user/:comment', auth.required, async function (req, res, n
         if (String(req.comment.author._id) === req.payload.id || req.payload.id === String(req.user._id)) {
             if (req.comment.origin.length <= 0) {
                 req.user.comments.remove(req.comment._id);
+                user.changeRespect(-100);
+                user.save();
                 await req.user.save();
             } else {
                 await Comment.updateOne(

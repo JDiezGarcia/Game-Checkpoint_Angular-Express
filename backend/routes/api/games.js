@@ -114,9 +114,9 @@ router.delete('/:game/favorite', auth.required, function (req, res, next) {
     }).catch(next);
 });
 
-router.post('/:game/changeStatus', auth.required, function (req, res, next) {
+router.put('/:game/changeStatus', auth.required, function (req, res, next) {
     var gameID = req.game._id;
-    let status = req.query.newStatus;
+    let status = req.body.newStatus;
     User.findById(req.payload.id).then(function (user) {
         if (!user) { return res.sendStatus(401); }
         if (status !== undefined) {
@@ -126,5 +126,40 @@ router.post('/:game/changeStatus', auth.required, function (req, res, next) {
         }
     }).catch(next);
 });
+
+router.post('/:game/rating', auth.required, function (req, res, next) {
+    var rate = req.body.rate;
+    User.findById(req.payload.id).then(function (user) {
+        if (!user) { return res.sendStatus(401); }
+        return req.game.addRate(rate, user).then(function () {
+                user.changeRespect(100);
+                user.save();
+                return res.json({ game: req.game.toDetailsJSONFor(user) });
+        });
+    }).catch(next);
+});
+
+router.put('/:game/rating', auth.required, function (req, res, next) {
+    var rate = req.body.rate;
+    User.findById(req.payload.id).then(function (user) {
+        if (!user) { return res.sendStatus(401); }
+        return req.game.changeRate(rate, user).then(function () {
+            return res.json({ game: req.game.toDetailsJSONFor(user) });
+        });
+    }).catch(next);
+});
+
+router.delete('/:game/rating', auth.required, function (req, res, next) {
+    User.findById(req.payload.id).then(function (user) {
+        if (!user) { return res.sendStatus(401); }
+        return req.game.removeRate(user).then(function () {
+            user.changeRespect(-100);
+            user.save();
+            return res.json({ game: req.game.toDetailsJSONFor(user) });
+        });
+    }).catch(next);
+});
+
+
 
 module.exports = router;

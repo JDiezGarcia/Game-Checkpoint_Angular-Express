@@ -4,7 +4,7 @@ var slug = require('slug');
 var Populate = require('../db/populate');
 
 var GameSchema = new mongoose.Schema({
-    slug: { type: String, lowercase: true},
+    slug: { type: String, lowercase: true },
     name: String,
     description: String,
     categories: [String],
@@ -14,7 +14,8 @@ var GameSchema = new mongoose.Schema({
     rating: [
         {
             rate: Number,
-            user: {type: mongoose.Schema.Types.ObjectId, ref: 'User'}}
+            user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
+        }
     ],
     comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }]
 
@@ -44,7 +45,8 @@ GameSchema.methods.toDetailsJSONFor = function (user) {
         img: this.img,
         baseHours: this.baseHours,
         universe: this.universe,
-        rating: this.rating,
+        rating: this.calculateRating(),
+        rate: user ? this.myRate(user) : false,
         comments: this.comments.map(comment => {
             return comment.toCommentJSONFor();
         }),
@@ -54,7 +56,6 @@ GameSchema.methods.toDetailsJSONFor = function (user) {
 };
 
 GameSchema.methods.toListJSONFor = function (user) {
-    console.log(user.checkStatus(this._id))
     return {
         slug: this.slug,
         name: this.name,
@@ -65,5 +66,46 @@ GameSchema.methods.toListJSONFor = function (user) {
         isFavorite: user ? user.isFavorite(this._id) : false
     };
 };
+
+GameSchema.methods.addRate = function (rate, user) {
+    if (this.rating.indexOf(user.id) === -1) {
+        this.rating.push({
+            rate: rate,
+            _id: user._id
+        });
+    }
+    return this.save();
+};
+
+GameSchema.methods.removeRate = function (user) {
+    this.rating.pull({ _id: user._id });
+    return this.save();
+};
+
+GameSchema.methods.changeRate = function (rate, user) {
+    this.rating.find(rates => {
+        if (String(rates._id) === String(user._id)) {
+            rates.rate = rate;
+        }
+    })
+    return this.save();
+};
+
+GameSchema.methods.myRate = function (user) {
+    let rate;
+    this.rating.some(function (rates) {
+        if (rates.id.toString() === user._id.toString()) {
+            rate = rates.rate;
+        };
+    });
+    return rate;
+};
+
+GameSchema.methods.calculateRating = function (){
+    let ratingArr = this.rating.map(rate => rate.rate);
+    let rating = (ratingArr.reduce((x, y) => x + y, 0)) / ratingArr.length;
+    return rating;
+}
+
 
 mongoose.model('Game', GameSchema);
