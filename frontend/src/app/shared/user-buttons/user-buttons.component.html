@@ -1,31 +1,73 @@
-<div class="navbar-buttons btn-group buttons">
-    <button
-      class="custom-button login btn btn-outline-success"
-      id="navbar-login"
-    >
-      <span>
-        <i class="fa fa-user" id="login-icon">
-          <span data-tr="login">Login</span>
-        </i>
-      </span>
-      <span>
-        <div
-          class="USER"
-          id="login-icon"
-        >
-          <img style="max-width: 30px" src="" />
-          <span>User</span>
-        </div>
-      </span>
-    </button>
+<div *appShowAuthed="false" class="navbar-buttons btn-group buttons">
+  <button
+    class="custom-button login btn btn-outline-success"
+    id="navbar-login"
+    routerLinkActive="active"
+    [routerLink]="['/auth/login']"
+  >
+    <span>
+      <i class="fa fa-user" id="login-icon">
+        <span data-tr="login">Login</span>
+      </i>
+    </span>
+    <span>
+      <div class="USER" id="login-icon">
+        <img style="max-width: 30px" src="" />
+        <span>Login</span>
+      </div>
+    </span>
+  </button>
 
-    <a
-      class="custom-button shopping-cart btn btn-outline-success"
-      href=""
-      id="navbar-shopping-cart"
-    >
-      <span>
-        <i class="fa fa-bell"></i>
-      </span>
-    </a>
-  </div>
+  <button
+    class="custom-button login btn btn-outline-success"
+    id="navbar-login"
+    routerLinkActive="active"
+    [routerLink]="['/auth/register']"
+  >
+    <span>
+      <i class="fa fa-user" id="login-icon">
+        <span data-tr="login">register</span>
+      </i>
+    </span>
+    <span>
+      <div class="register" id="register-icon"></div>
+    </span>
+  </button>
+</div>
+
+<div *appShowAuthed="true" class="navbar-buttons btn-group buttons">
+  <button
+    class="custom-button login btn btn-outline-success"
+    id="navbar-login"
+    routerLinkActive="active"
+    routerLink="/login"
+  >
+    <span>
+      <i class="fa fa-user" id="login-icon">
+        <span data-tr="login">Login</span>
+      </i>
+    </span>
+    <span>
+      <div class="USER" id="login-icon">
+        <img style="max-width: 30px" src="" />
+        <span>Login</span>
+      </div>
+    </span>
+  </button>
+
+  <button
+    class="custom-button login btn btn-outline-success"
+    id="navbar-login"
+    routerLinkActive="active"
+    routerLink="/register"
+  >
+    <span>
+      <i class="fa fa-user" id="login-icon">
+        <span data-tr="login">Login</span>
+      </i>
+    </span>
+    <span>
+      <div class="register" id="register-icon"></div>
+    </span>
+  </button>
+</div>

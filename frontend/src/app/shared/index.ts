@@ -9,3 +9,6 @@ export * from './search';
 export * from './user-buttons';
 export * from './pagination';
 export * from './filters';
+export * from './list-errors.component';
+export * from './shared.module';
+export * from './show-authed.directive';

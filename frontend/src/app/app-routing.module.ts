@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
-import {  PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from './core';
+import { NoAuthGuard } from './auth/no-auth-guard.service';
 
 const routes: Routes = [
   {
@@ -9,14 +11,27 @@ const routes: Routes = [
   },
   {
     path: 'games',
+    canActivate: [AuthGuard],
     loadChildren: () =>
       import('./games/games.module').then((m) => m.GamesModule),
   },
   {
     path: 'details',
+    canActivate: [AuthGuard],
     loadChildren: () =>
       import('./details/details.module').then((m) => m.DetailsModule),
   },
+  {
+    path: 'auth',
+    canActivate: [NoAuthGuard],
+    loadChildren: () =>
+      import('./auth/auth.module').then((m) => m.AuthModule),
+  },
+  // {
+  //   path: 'register',
+  //   loadChildren: () =>
+  //     import('./auth/auth.module').then((m) => m.AuthModule),
+  // },
   { path: '**', redirectTo: '', pathMatch: 'full' },
 ];
 
@@ -29,4 +44,4 @@ const routes: Routes = [
   ],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

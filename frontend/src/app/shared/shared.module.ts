@@ -13,6 +13,8 @@ import { SearchBarComponent } from './search/search-bar.component';
 import { UserButtonsComponent } from './user-buttons/user-buttons.component';
 import { PaginationComponent } from './pagination/pagination.component';
 import { FiltersComponent } from './filters/filters.component';
+import { ListErrorsComponent } from './list-errors.component';
+import { ShowAuthedDirective } from './show-authed.directive';
 
 @NgModule({
   declarations: [
@@ -24,7 +26,9 @@ import { FiltersComponent } from './filters/filters.component';
     SearchBarComponent,
     UserButtonsComponent,
     PaginationComponent,
-    FiltersComponent
+    FiltersComponent,
+    ListErrorsComponent,
+    ShowAuthedDirective
   ],
   imports: [
     CommonModule,
@@ -48,6 +52,8 @@ import { FiltersComponent } from './filters/filters.component';
     ReactiveFormsModule,
     ToastrModule,
     RouterModule,
+    ListErrorsComponent,
+    ShowAuthedDirective
   ],
 })
 export class SharedModule {}

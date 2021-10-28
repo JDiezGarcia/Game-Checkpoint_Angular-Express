@@ -1,16 +1,34 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ApiService, GamesService, CategoriesService } from './services';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpTokenInterceptor } from './interceptors/http.token.interceptor';
 
-@NgModule({
-  declarations: [],
-  imports: [
-    CommonModule
-  ],
-  providers: [
+import {
     ApiService,
     GamesService,
-    CategoriesService
-  ]
+    CategoriesService,
+    AuthGuard,
+    CommentsService,
+    JwtService,
+    ProfilesService,
+    UserService
+} from './services';
+
+@NgModule({
+    declarations: [],
+    imports: [
+        CommonModule
+    ],
+    providers: [
+        {provide: HTTP_INTERCEPTORS, useClass: HttpTokenInterceptor, multi: true },
+        ApiService,
+        GamesService,
+        AuthGuard,
+        CategoriesService,
+        CommentsService,
+        JwtService,
+        ProfilesService,
+        UserService
+    ]
 })
 export class CoreModule { }

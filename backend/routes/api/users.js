@@ -68,11 +68,12 @@ router.post('/users', async function (req, res, next) {
         {user: req.body.user.user},
         {email: req.body.user.email}]
     }).then(function (existingUser) {
-        if (existingUser) { 
-            let errors = {}
-            console.log(existingUser.user, req.body.user.user )
-            errors.user = existingUser[0].toObject().user === req.body.user.user ? 1 : 0;
-            errors.email = existingUser[0].toObject().email === req.body.user.email ? 1 : 0;
+        if (existingUser && existingUser.length > 0) { 
+            console.log(existingUser)
+            let errors = {errors: {}}
+            console.log(existingUser[0].user, req.body.user.user )
+            errors.errors.user = existingUser[0].toObject().user === req.body.user.user ? 1 : 0;
+            errors.errors.email = existingUser[0].toObject().email === req.body.user.email ? 1 : 0;
             return res.status(422).json(errors); 
         }
         var user = new User();

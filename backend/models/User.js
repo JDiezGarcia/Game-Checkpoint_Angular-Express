@@ -31,6 +31,10 @@ var UserSchema = new mongoose.Schema({
 UserSchema.pre('findOne', Populate('comments'));
 
 //--[Profile Serializer]--\\
+/*--{
+    Add User-Count Followers
+    Add User-Count Follow
+}--*/
 UserSchema.methods.toProfileJSONFor = function (user) {
     return {
         email: this.email,
@@ -38,9 +42,9 @@ UserSchema.methods.toProfileJSONFor = function (user) {
         title: this.title,
         name: this.name,
         img: this.img || 'https://static.productionready.io/images/smiley-cyrus.jpg',
-        comments: this.comments.map(comment => {
-            return comment.toCommentJSONFor();
-        }),
+        // comments: this.comments.map(comment => {
+        //     return comment.toCommentJSONFor();
+        // }),
         following: user ? user.isFollowing(this._id) : false
 
     };
@@ -55,14 +59,15 @@ UserSchema.methods.toThumbnailJSONFor = function () {
     };
 };
 
-//--[Auth Serializer]--\\
+//--[ UserAuth Serializer]--\\
 UserSchema.methods.toAuthJSON = function(){
     return {
     user: this.user,
     email: this.email,
     token: this.generateJWT(),
     name: this.name,
-    img: this.img
+    img: this.img,
+    title: this.title
   };
 };
 
