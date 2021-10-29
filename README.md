@@ -195,7 +195,7 @@ CMD npm install && npm run dev
 ## 10. Creacion del config.env
 > Creamos las dos variables necesarias para el proyecto de express dandole el nombre del contenedor de mongo y poniendo un secret default para cambiar luego
 > 
->![ScreenShot](filesREADME/12.png)
+>![ScreenShot](filesREADME/10.png)
 ```env
 DB_MONGO_URI='mongodb://gamecheckmongodb:27017/game-checkpoint'
 JWT_SECRET='isATestSecret'
@@ -218,10 +218,18 @@ connectToMongoDb();
 ## 12. Push al repositiorio Remoto
 > Una vez hecho todos los cambios necesarios hacemos un push de la rama al repositorio remoto.
 > 
->![ScreenShot](filesREADME/10.png)
+>![ScreenShot](filesREADME/12.png)
 ```bash
 git add .;
 git commit;
 git push origin main_dockerfile;
 ```
 ## 13. Clon del repositorio y ejecucion del script
+> El paso final es clonar el repositorio dar permisos al script y ejecutar-lo una vez hecho eso estamos listos para utilizar la aplicacion
+> 
+>![ScreenShot](filesREADME/13.png)
+```bash
+git clone https://github.com/JDiezGarcia/Game-Checkpoint_Angular-Express.git .;
+chmod +x docker_creation.sh;
+bash .docker_creation.sh;
+```
