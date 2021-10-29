@@ -102,6 +102,8 @@ git commit -m "Preparando la Carpeta";
 ```sh
 #!/bin/bash
 
+#!/bin/bash
+
 network='game-check-point';
 cServer='game-check-express';
 cClient='game-check-angular';
@@ -126,13 +128,14 @@ db(){
         docker build -t $cDB -f docker/dockerfile-db docker;
         docker run --name=$cDB -v gameCheckVol:/data/db --network=$network -p 27017:27017 -d $cDB:latest
     else
-        docker start $cDB;
+        docker start $cDB > /dev/null &2>&1;;
     fi
 }
 
 server(){
     if [ $cExist -eq 1 ] || [ $cExist -eq 3 ];then
-        docker start $cServer;
+        docker stop $cServer > /dev/null &2>&1;;
+        docker start $cServer > /dev/null &2>&1;;
     else
         docker build -t $cServer -f docker/dockerfile-server docker;
         docker run --name=$cServer -v ${path}/backend:/project --network=$network -p 4000:4000 -d $cServer:latest
@@ -141,7 +144,8 @@ server(){
 
 client(){
     if [ $cExist -eq 2 ] || [ $cExist -eq 3 ];then
-        docker start $cClient;
+        docker stop $cClient > /dev/null &2>&1;
+        docker start $cClient > /dev/null &2>&1;
     else
         docker build -t $cClient -f docker/dockerfile-client docker;
         docker run --name=$cClient -v ${path}/frontend:/project --network=$network -p 80:4200 -d $cClient:latest
@@ -230,6 +234,7 @@ git push origin main_dockerfile;
 >![ScreenShot](filesREADME/13.png)
 ```bash
 git clone https://github.com/JDiezGarcia/Game-Checkpoint_Angular-Express.git .;
+git checkout main_dockerfile;
 chmod +x docker_creation.sh;
 bash .docker_creation.sh;
 ```
