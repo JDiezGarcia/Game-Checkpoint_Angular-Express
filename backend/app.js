@@ -14,8 +14,16 @@ app.use(require('method-override')());
 app.use(express.static(__dirname + '/public'));
 app.use(errorhandler());
 
-mongoose.connect(process.env.DB_MONGO_URI);
-mongoose.set('debug', true);
+async function connectToMongoDb() {
+	console.log('Trying to connect to mongodb!');
+	try {
+		await mongoose.connect(process.env.DB_MONGO_URI);
+		mongoose.set('debug', true);
+	} catch (e) { setTimeout(connectToMongoDb, 5000); }
+}
+
+connectToMongoDb();
+//mongoose.connection.on('disconnected', connectToMongoDb);
 
 require('./models/User');
 require('./models/Comment');

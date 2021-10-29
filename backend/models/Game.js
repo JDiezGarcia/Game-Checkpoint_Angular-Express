@@ -54,7 +54,6 @@ GameSchema.methods.toDetailsJSONFor = function (user) {
 };
 
 GameSchema.methods.toListJSONFor = function (user) {
-    console.log(user.checkStatus(this._id))
     return {
         slug: this.slug,
         name: this.name,
