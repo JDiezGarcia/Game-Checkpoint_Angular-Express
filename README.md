@@ -13,7 +13,7 @@ Curso: Web Applications Development
 - [Game-Checkpoint_Angular-Express (Dockerfile)](#game-checkpoint_angular-express-dockerfile)
 - [Index](#index)
 - [Introduction](#introduction)
-- [Steps](#steps)
+- [Steps Dockeritation](#steps-dockeritation)
   - [1. Tag Repositorio](#1-tag-repositorio)
   - [2. Comprobacion Repositorio Remoto](#2-comprobacion-repositorio-remoto)
   - [3. Creacion Rama 'main_dockerfile'](#3-creacion-rama-main_dockerfile)
@@ -27,6 +27,12 @@ Curso: Web Applications Development
   - [11. Cambio de funcion en Express](#11-cambio-de-funcion-en-express)
   - [12. Push al repositiorio Remoto](#12-push-al-repositiorio-remoto)
   - [13. Clon del repositorio y ejecucion del script](#13-clon-del-repositorio-y-ejecucion-del-script)
+- [Steps DockerHub Upload Images](#steps-dockerhub-upload-images)
+  - [1. Creacion Cuenta DockerHub](#1-creacion-cuenta-dockerhub)
+  - [2. Creacion Repositorio DockerHub](#2-creacion-repositorio-dockerhub)
+  - [3. Login DockerHub en Docker](#3-login-dockerhub-en-docker)
+  - [4. Subida al Repositorio DockerHub](#4-subida-al-repositorio-dockerhub)
+  - [5. Creacion y Subida de Respositorios/Imagenes](#5-creacion-y-subida-de-respositoriosimagenes)
 
 # Introduction
 
@@ -36,7 +42,7 @@ Mediante un script haremos que Docker cree 3 imagenes si los conetenedores no ex
 Tambien se creara una red para que esten comunicados y se pasaran los archivos necesarios para el funcionamiento de estos.
 
 
-# Steps
+# Steps Dockeritation
 
 
 ## 1. Tag Repositorio
@@ -100,8 +106,6 @@ git commit -m "Preparando la Carpeta";
 >![ScreenShot](filesREADME/6.png)
 
 ```sh
-#!/bin/bash
-
 #!/bin/bash
 
 network='game-check-point';
@@ -209,6 +213,7 @@ JWT_SECRET='isATestSecret'
 > 
 >![ScreenShot](filesREADME/11.png)
 ```js
+// Parte app.js
 async function connectToMongoDB(){
     console.log('Trying to connect to mongodb!');
     try{
@@ -224,6 +229,7 @@ connectToMongoDb();
 > 
 >![ScreenShot](filesREADME/12.png)
 ```bash
+# Comandos Utilizados:
 git add .;
 git commit;
 git push origin main_dockerfile;
@@ -233,8 +239,50 @@ git push origin main_dockerfile;
 > 
 >![ScreenShot](filesREADME/13.png)
 ```bash
+# Comandos Utilizados:
 git clone https://github.com/JDiezGarcia/Game-Checkpoint_Angular-Express.git .;
 git checkout main_dockerfile;
 chmod +x docker_creation.sh;
 bash docker_creation.sh;
+```
+# Steps DockerHub Upload Images
+
+## 1. Creacion Cuenta DockerHub
+
+> Primero creamos una cuenta en DockerHub y una vez verificada vamos al apartado Repositories/Repositorios y damos al boton de crear un repositorio.
+>
+>![ScreenShot](filesREADME/14.png)
+
+## 2. Creacion Repositorio DockerHub
+> Lo siguiente es crear un tag para la imagen que despues se subira a este repositorio, lo pondremos publico para que todos puedan verlo.
+>
+>![ScreenShot](filesREADME/15.png)
+
+## 3. Login DockerHub en Docker
+> Debemos loguearnos para poder hacer subidas a los repositorios
+> 
+> ![ScreenShot](filesREADME/18.png)
+```bash
+# Comando Utilizado:
+docker login -u jdiezgarcia;
+```
+
+## 4. Subida al Repositorio DockerHub
+> Ahora subimos nuestra imagen al repositorio
+> 
+> ![ScreenShot](filesREADME/16.png)
+```bash
+# Comando Utilizado:
+docker push jdiezgarcia/game-check-angular;
+```
+## 5. Creacion y Subida de Respositorios/Imagenes
+> Cuando tenemos una imagen pero no tiene un user asociado mediante el nombre lo que hacemos es cambiarle el nombre a la imagen y entonces podemos subirla mediante push, creando asi un repositorio instantaneo sin necesidad de crearlo desde la web.
+> 
+> ![ScreenShot](filesREADME/17.png)
+```bash
+# Comandos Utilizados:
+docker tag game.check.express jdiezgarcia/game-check-express;
+docker tag gamecheckmongodb jdiezgarcia/game-check-mongodb;
+docker push jdiezgarcia/game-check-express;
+docker push jdiezgarcia/game-check-mongodb;
 ```
