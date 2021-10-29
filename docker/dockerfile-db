@@ -1,0 +1,5 @@
+FROM mongo:5.0.3
+RUN mkdir /dump/checkpoint
+WORKDIR /dump/checkpoint
+COPY ./dump/game-checkpoint .
+RUN mongorestore --db game-checkpoint --drop .
