@@ -134,8 +134,8 @@ db(){
 
 server(){
     if [ $cExist -eq 1 ] || [ $cExist -eq 3 ];then
-        docker stop $cServer > /dev/null &2>&1;;
-        docker start $cServer > /dev/null &2>&1;;
+        docker stop $cServer > /dev/null &2>&1;
+        docker start $cServer > /dev/null &2>&1;
     else
         docker build -t $cServer -f docker/dockerfile-server docker;
         docker run --name=$cServer -v ${path}/backend:/project --network=$network -p 4000:4000 -d $cServer:latest
@@ -236,5 +236,5 @@ git push origin main_dockerfile;
 git clone https://github.com/JDiezGarcia/Game-Checkpoint_Angular-Express.git .;
 git checkout main_dockerfile;
 chmod +x docker_creation.sh;
-bash .docker_creation.sh;
+bash docker_creation.sh;
 ```
