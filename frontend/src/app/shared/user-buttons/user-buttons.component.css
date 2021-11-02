@@ -1,9 +1,18 @@
 .btn{
-    background-color: none;
-    color: purple !important;
-    border: none;
+    background-color: purple;
+    color: white !important;
+    border: purple 1px solid;
 }
 
-i{
+.btn:hover{
+    background-color: white;
+    color: purple !important;
+    border: purple 1px solid;
+}
+
+span{
     font-size: 20px
+}
+.btn:focus{
+    box-shadow: none;
 }

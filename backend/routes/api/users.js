@@ -18,19 +18,19 @@ router.put('/user', auth.required, function (req, res, next) {
         if (!user) { return res.sendStatus(401); }
 
         // only update fields that were actually passed...
-        if (typeof req.body.user.username !== 'undefined') {
-            user.username = req.body.user.username;
+        if (req.body.user.user.length !== 0) {
+            user.user = req.body.user.user;
         }
-        if (typeof req.body.user.email !== 'undefined') {
+        if (req.body.user.email.length !== 0 ) {
             user.email = req.body.user.email;
         }
-        if (typeof req.body.user.bio !== 'undefined') {
-            user.bio = req.body.user.bio;
+        if (req.body.user.name.length !== 0 ) {
+            user.name = req.body.user.name;
         }
-        if (typeof req.body.user.image !== 'undefined') {
-            user.image = req.body.user.image;
+        if (req.body.user.img.length !== 0) {
+            user.img = req.body.user.img;
         }
-        if (typeof req.body.user.password !== 'undefined') {
+        if (req.body.user.password.length !== 0) {
             user.setPassword(req.body.user.password);
         }
 
@@ -71,7 +71,6 @@ router.post('/users', async function (req, res, next) {
         if (existingUser && existingUser.length > 0) { 
             console.log(existingUser)
             let errors = {errors: {}}
-            console.log(existingUser[0].user, req.body.user.user )
             errors.errors.user = existingUser[0].toObject().user === req.body.user.user ? 1 : 0;
             errors.errors.email = existingUser[0].toObject().email === req.body.user.email ? 1 : 0;
             return res.status(422).json(errors); 
@@ -81,6 +80,7 @@ router.post('/users', async function (req, res, next) {
         user.user = req.body.user.user;
         user.email = req.body.user.email;
         user.setPassword(req.body.user.password);
+        user.img = './resources/img/user/user-' + (Math.floor(Math.random() * 24 + 1)) + '.jpg'
         user.save().then(function () {
             return res.json({ user: user.toAuthJSON() });
         })

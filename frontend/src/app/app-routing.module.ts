@@ -27,11 +27,16 @@ const routes: Routes = [
     loadChildren: () =>
       import('./auth/auth.module').then((m) => m.AuthModule),
   },
-  // {
-  //   path: 'register',
-  //   loadChildren: () =>
-  //     import('./auth/auth.module').then((m) => m.AuthModule),
-  // },
+  {
+    path: 'settings',
+    canActivate: [AuthGuard],
+    loadChildren: () => import('./settings/settings.module').then(m => m.SettingsModule)
+  },
+  {
+    path: 'profile',
+    canActivate: [AuthGuard],
+    loadChildren: () => import('./profile/profile.module').then(m => m.ProfileModule)
+  },
   { path: '**', redirectTo: '', pathMatch: 'full' },
 ];
 

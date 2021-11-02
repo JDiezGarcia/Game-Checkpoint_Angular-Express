@@ -6,6 +6,7 @@ var User = mongoose.model('User');
 
 
 router.param('game', async function (req, res, next, slug) {
+    console.log(slug)
     await Game.findOne({ slug: slug })
         .then(function (game) {
             if (!game) { return res.sendStatus(404); }
@@ -27,45 +28,53 @@ router.post('/game', auth.required, function (req, res, next) {
     }).catch(next);
 });
 
-router.get('/games', async function (req, res) {
+router.get('/games', auth.required, async function (req, res, next) {
+    await User.findById(req.payload.id).then(async function (user) {
+        if (!user) { return res.sendStatus(401); }
+        var query = {};
+        var limit = typeof req.query.limit !== 'undefined' ? req.query.limit : 10;
+        var offset = typeof req.query.offset !== 'undefined' ? req.query.offset : 0;
+        if (typeof req.query.categories !== 'undefined') {
+            query.categories = { "$all": req.query.categories };
+        }
+        if (typeof req.query.query !== 'undefined') {
+            query.name = { $regex: ".*" + req.query.query + ".*", $options: "i" };
+        }
 
-    var query = {};
-    var limit = typeof req.query.limit !== 'undefined' ? req.query.limit : 10;
-    var offset = typeof req.query.offset !== 'undefined' ? req.query.offset : 0;
-    if (typeof req.query.categories !== 'undefined') {
-        query.categories = { "$all": req.query.categories };
-    }
-    if (typeof req.query.query !== 'undefined') {
-        query.name = { $regex: ".*" + req.query.query + ".*", $options: "i" };
-    }
+        var gameList = Game.find(query).limit(Number(limit)).skip(Number(offset)).exec();
+        var gamesCount = Game.count(query).exec();
 
+        try {
+            gameList = await gameList;
+            gamesCount = await gamesCount;
+        } catch (error) {
 
-    var gameList = Game.find(query).limit(Number(limit)).skip(Number(offset)).exec();
-    var gamesCount = Game.count(query).exec();
-    try {
-        gameList = await gameList;
-        gamesCount = await gamesCount;
-    } catch (error) {
-        console.log(error);
-        return res.status(500).send('Error: Game List not Found');
-    }
+            console.log(error);
+            return res.status(500).send('Error: Game List not Found');
+        }
 
-    return res.json({
-        games: gameList.map(function (game) {
-            return game.toListJSONFor();
-        }),
-        gamesCount: gamesCount
-    });
+        return res.json({
+            games: gameList.map(function (game) {
+                return game.toListJSONFor(user);
+            }),
+            gamesCount: gamesCount
+        });
+    }).catch(next);
+
 });
 
 // Details
-router.get('/details/:game', function (req, res, next) {
-    try {
-        return res.json({ games: req.game.toDetailsJSONFor() });
-    } catch (err) {
-        console.log(err)
-        return res.status(500).send('Error: Game not Found')
-    };
+router.get('/details/:game', auth.required, async function (req, res, next) {
+    await User.findById(req.payload.id).then(async function (user) {
+        if (!user) { return res.sendStatus(401); }
+        try {
+            return await res.json({ games: req.game.toDetailsJSONFor(user) });
+        } catch (err) {
+            console.log(err)
+            return res.status(500).send('Error: Game not Found')
+        };
+    }).catch(next);
+
 });
 
 router.post('/:game/follow', auth.required, function (req, res, next) {
@@ -132,9 +141,9 @@ router.post('/:game/rating', auth.required, function (req, res, next) {
     User.findById(req.payload.id).then(function (user) {
         if (!user) { return res.sendStatus(401); }
         return req.game.addRate(rate, user).then(function () {
-                user.changeRespect(100);
-                user.save();
-                return res.json({ game: req.game.toDetailsJSONFor(user) });
+            user.changeRespect(100);
+            user.save();
+            return res.json({ game: req.game.toDetailsJSONFor(user) });
         });
     }).catch(next);
 });

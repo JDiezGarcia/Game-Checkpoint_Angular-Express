@@ -22,3 +22,11 @@ header{
     align-self: center;
     margin: 10px;
 }
+
+a{
+    color: purple !important;
+}
+
+a:hover{
+    color: rgb(214, 69, 214) !important;
+}

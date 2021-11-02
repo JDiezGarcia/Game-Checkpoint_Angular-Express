@@ -64,7 +64,8 @@ export class GamesComponent implements OnInit {
 
   ngOnInit() {
     this.listConfig = {
-      type: "",
+      type: 'all',
+      user: '',
       filters: {
         limit: 3,
         offset: 0

@@ -6,6 +6,7 @@ var jwt = require('jsonwebtoken');
 var secret = process.env.JWT_SECRET;
 var Populate = require('../db/populate');
 
+
 //--[User Schema]--\\
 var UserSchema = new mongoose.Schema({
     email: { type: String, lowercase: true, required: [true, "can't be blank"], match: [/\S+@\S+\.\S+/, 'is invalid'], index: true },
@@ -29,7 +30,7 @@ var UserSchema = new mongoose.Schema({
 
 //--[Populate all comment when a find one is request]--\\
 UserSchema.pre('findOne', Populate('comments'));
-
+UserSchema.pre('findOne', Populate('gamesFollow._id'))
 //--[Profile Serializer]--\\
 /*--{
     Add User-Count Followers
@@ -50,6 +51,36 @@ UserSchema.methods.toProfileJSONFor = function (user) {
     };
 };
 
+UserSchema.methods.toGamesFollowJSONFor = function (type, user) {
+    let playing = 0;
+    let pending = 0;
+    let finished = 0;
+
+    return {
+        games: this.gamesFollow.map(game => {
+            switch (game.status) {
+                case "playing":
+                    playing += 1;
+                    break;
+                case "pending":
+                    pending += 1;
+                    break;
+                case "finished":
+                    finished += 1;
+                    break;
+            }
+            if (game.status === type) {
+
+                return game._id.toListJSONFor(user);
+            }
+        }),
+        gamesCounts: {
+            playing: playing,
+            pending: pending,
+            finished: finished
+        }
+    }
+}
 //--[Comment Thumbnail Serializer]--\\
 UserSchema.methods.toThumbnailJSONFor = function () {
     return {
@@ -60,15 +91,15 @@ UserSchema.methods.toThumbnailJSONFor = function () {
 };
 
 //--[ UserAuth Serializer]--\\
-UserSchema.methods.toAuthJSON = function(){
+UserSchema.methods.toAuthJSON = function () {
     return {
-    user: this.user,
-    email: this.email,
-    token: this.generateJWT(),
-    name: this.name,
-    img: this.img,
-    title: this.title
-  };
+        user: this.user,
+        email: this.email,
+        token: this.generateJWT(),
+        name: this.name,
+        img: this.img,
+        title: this.title
+    };
 };
 
 UserSchema.plugin(uniqueValidator, { message: 'is already taken.' });
@@ -86,11 +117,11 @@ UserSchema.methods.setPassword = function (password) {
 };
 
 //--[Method Generate Token]--\\
-UserSchema.methods.generateJWT = function() {
-  return jwt.sign({
-    id: this._id,
-    user: this.user,
-  }, secret);
+UserSchema.methods.generateJWT = function () {
+    return jwt.sign({
+        id: this._id,
+        user: this.user,
+    }, secret);
 };
 
 //--[Method Set Game Fav]--\\
@@ -128,7 +159,7 @@ UserSchema.methods.doFollow = function (id) {
 };
 
 //--[Method Add New Follower]--\\
-UserSchema.methods.newFollower = function (id){
+UserSchema.methods.newFollower = function (id) {
     if (this.followers.indexOf(id) === -1) {
         this.followers.push(id);
         this.changeRespect(100);
@@ -159,15 +190,15 @@ UserSchema.methods.isFollowing = function (id) {
 };
 
 //--[Method Follow Game]--\\
-UserSchema.methods.doGameFollow = function (id){
+UserSchema.methods.doGameFollow = function (id) {
     let follow = true;
     this.gamesFollow.find(o => {
-        if(String(o._id) === String(id)){
+        if (String(o._id) === String(id)) {
             follow = false;
         }
 
     })
-    if (follow){
+    if (follow) {
         this.gamesFollow.push({
             _id: id,
             status: "pending",
@@ -180,7 +211,7 @@ UserSchema.methods.doGameFollow = function (id){
 
 //--[Method Remove Follow Game]
 UserSchema.methods.undoGameFollow = function (id) {
-    this.gamesFollow.pull({_id: id});
+    this.gamesFollow.pull({ _id: id });
     this.changeRespect(-100);
     return this.save();
 };
@@ -190,7 +221,7 @@ UserSchema.methods.changeStatus = function (id, newStatus) {
     this.gamesFollow.find(game => {
         if (String(game._id) === String(id)) {
             game.status = newStatus;
-            if(newStatus === "finished"){
+            if (newStatus === "finished") {
                 game.finished += 1;
                 this.changeRespect(200);
             }
@@ -203,28 +234,29 @@ UserSchema.methods.changeStatus = function (id, newStatus) {
 //--[Method Check what is the Status of the Game]--\\
 UserSchema.methods.checkStatus = function (id) {
     let status;
-    this.gamesFollow.some(function (game) {
-        if(game.id.toString() === id.toString()){
+    this.gamesFollow.find(function (game) {
+        if (game._id._id.toString() === id.toString()) {
             status = game.status;
         };
     });
+    console.log(status);
     return status;
 };
 
-UserSchema.methods.changeRespect = function (respect){
+UserSchema.methods.changeRespect = function (respect) {
     this.respect += respect
     this.changeTitle();
 }
 
 UserSchema.methods.changeTitle = function () {
-    
-    this.title = 
-        this.respect >= 0 ? 'Noob': 
-        this.respect >= 1001 ? 'Player':
-        this.respect >= 10001 ? 'Gamer':
-        this.respect >= 100001 ? 'Pro':
-        this.respect >= 1000001 ? 'Completionist': 
-        "Hacker";
+
+    this.title =
+        this.respect >= 0 ? 'Noob' :
+            this.respect >= 1001 ? 'Player' :
+                this.respect >= 10001 ? 'Gamer' :
+                    this.respect >= 100001 ? 'Pro' :
+                        this.respect >= 1000001 ? 'Completionist' :
+                            "Hacker";
 
 }
 

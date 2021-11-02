@@ -1,12 +1,16 @@
 <div class="card">
   <div class="card-img-top">
-    <img [src]="game.img" />
+    <img [src]="infoGame.img" />
     <div class="fa-stack fa-1x">
       <i class="fas fa-square fa-stack-2x"></i>
-      <i class="fa fa-plus fa-stack-1x fa-inverse"></i>
-      <i class="fa fa-check fa-stack-1x fa-inverse" hidden></i>
+      <i class="fa fa-plus fa-stack-1x fa-inverse"
+      (click)=follow(infoGame.slug)
+      [hidden]='infoGame.status'></i>
+      <i class="fa fa-check fa-stack-1x fa-inverse" 
+      (click)=unfollow(infoGame.slug) 
+      [hidden]='!infoGame.status'></i>
     </div>
 
-    <i class="fa fa-eye" [routerLink]="['/details', game.slug]"></i>
+    <i class="fa fa-eye" [routerLink]="['/details', infoGame.slug]"></i>
   </div>
 </div>

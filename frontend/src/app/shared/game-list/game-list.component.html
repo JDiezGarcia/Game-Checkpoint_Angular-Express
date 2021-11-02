@@ -3,6 +3,7 @@
     *ngFor="let game of results"
     [game]="game"
     class="col-4 game-card"
+    (removeGame)="removeGame($event)"
   >
   </app-game-card>
 </div>

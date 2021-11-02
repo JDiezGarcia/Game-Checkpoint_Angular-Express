@@ -3,7 +3,7 @@ import { HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { ApiService } from './api.service';
-import { Game, GameFilters } from '../models';
+import { Details, Game, GameFilters } from '../models';
 import { map } from 'rxjs/operators';
 
 @Injectable()
@@ -20,14 +20,20 @@ export class GamesService {
       );
   }
 
-  get(slug: string): Observable<Game> {
-    return this.apiService.get('/details/' + slug).pipe(
+  get(slug: string): Observable<Details> {
+    return this.apiService.get('/details/' + slug ).pipe(
       map((data) => {
         return data.games;
       })
     );
   }
 
+  gameFollow(slug: string): Observable<Game> {
+    return this.apiService.post('/' + slug +  '/follow');
+  }
+  gameUnfollow(slug: string): Observable<Game> {
+    return this.apiService.delete('/'+ slug +  '/follow');
+  }
   // destroy(slug) {
   //   return this.apiService.delete('/articles/' + slug);
   // }

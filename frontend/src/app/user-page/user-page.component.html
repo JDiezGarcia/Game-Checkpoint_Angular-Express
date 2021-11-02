@@ -1,1 +1,4 @@
-<app-carousel [config]="config"></app-carousel>
+<app-carousel [config]="config" *appShowAuthed="true"></app-carousel>
+<div *appShowAuthed="false" style="text-align: center;">
+    REGISTRATE PARA DISFRUTAR DE TODO NUESTRO CONTENIDO
+</div>

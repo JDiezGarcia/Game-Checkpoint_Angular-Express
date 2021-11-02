@@ -2,11 +2,11 @@ import { Injectable, } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
 
-import { Game, GamesService } from '../core';
+import { Details, GamesService } from '../core';
 import { catchError } from 'rxjs/operators';
 
 @Injectable()
-export class DetailsResolver implements Resolve<Game> {
+export class DetailsResolver implements Resolve<Details> {
   constructor(
     private gamesService: GamesService,
     private router: Router

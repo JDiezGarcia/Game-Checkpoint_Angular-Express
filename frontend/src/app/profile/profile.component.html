@@ -1,58 +1,78 @@
 <div class="profile-page">
-
   <div class="user-info">
     <div class="container">
       <div class="row">
-
         <div class="col-xs-12 col-md-10 offset-md-1">
-          <img [src]="profile.image" class="user-img" />
-          <h4>{{ profile.username }}</h4>
-          <p>{{ profile.bio }}</p>
-          <app-follow-button
-            [hidden]="isUser"
-            [profile]="profile"
-            (toggle)="onToggleFollowing($event)">
-          </app-follow-button>
-           <a [routerLink]="['/settings']"
-              [hidden]="!isUser"
-              class="btn btn-sm btn-outline-secondary action-btn">
-              <i class="ion-gear-a"></i> Edit Profile Settings
-            </a>
-        </div>
+          <img [src]="profile.img" class="user-img" />
+          <h4>{{ profile.user }}</h4>
+          <p>{{ profile.name }}</p>
+          <p>{{ profile.title }}</p>
 
+          <a
+            [routerLink]="['/settings']"
+            [hidden]="!isUser"
+            class="btn btn-sm btn-outline-secondary action-btn"
+          >
+            <i class="ion-gear-a"></i> Edit Profile Settings
+          </a>
+        </div>
       </div>
     </div>
   </div>
 
   <div class="container">
     <div class="row">
-
       <div class="col-xs-12 col-md-10 offset-md-1">
         <div class="articles-toggle">
           <ul class="nav nav-pills outline-active">
             <li class="nav-item">
-              <a class="nav-link"
-                 routerLinkActive="active"
-                 [routerLinkActiveOptions]="{ exact: true }"
-                 [routerLink]="['/profile', profile.username]">
-                 My Posts
+              <a
+                class="nav-link"
+                (click)="changeStatus('playing')"
+                [ngClass]="{
+                    'active': gamesStatus === 'playing' && statusCount.playing !== 0,
+                    'disabled': statusCount.playing === 0
+                }"
+              >
+                Playing({{statusCount.playing}})
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link"
-                 routerLinkActive="active"
-                 [routerLinkActiveOptions]="{ exact: true }"
-                 [routerLink]="['/profile', profile.username, 'favorites']">
-                 Favorited Posts
+              <a
+                class="nav-link"
+                (click)="changeStatus('pending')"
+                [ngClass]="{
+                    'active': gamesStatus === 'pending' && statusCount.pending !== 0,
+                    'disabled': statusCount.pending === 0
+                }"
+              >
+                Pending({{statusCount.pending}})
+              </a>
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                (click)="changeStatus('finished')"
+                [ngClass]="{
+                    'active': gamesStatus === 'finished' && statusCount.finished !== 0,
+                    'disabled': statusCount.finished === 0
+                }"
+              >
+                Finished({{statusCount.finished}})
               </a>
             </li>
           </ul>
         </div>
 
-        <router-outlet></router-outlet>
+        <app-game-list
+            *ngIf="gamesStatus !== 'none'"
+            (setStatus)="setStatus($event)"
+            [config]="listConfig"
+        ></app-game-list>
+        <div *ngIf="gamesStatus === 'none'">
+            IS TIME TO START USING OUR APPLICATION! GO TO GAMES AND FOLLOW SOME!
+        </div>
       </div>
-
     </div>
   </div>
-
 </div>

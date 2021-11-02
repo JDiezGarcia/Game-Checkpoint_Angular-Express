@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Game } from '../core';
+import { Details } from '../core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
@@ -13,7 +13,7 @@ export class DetailsComponent implements OnInit {
     private router: Router,
     ) { }
   
-  game!: Game;
+  game!: Details;
 
   ngOnInit() {
     this.route.data.subscribe(

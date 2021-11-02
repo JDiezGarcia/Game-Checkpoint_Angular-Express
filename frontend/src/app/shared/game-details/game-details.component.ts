@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { GamesService, Game } from 'src/app/core';
+import { GamesService, Details } from 'src/app/core';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -15,7 +15,7 @@ export class GameDetailsComponent implements OnInit {
     ) { }
 
     @Input() slug!: string;
-    @Input() game!: Game;
+    @Input() game!: Details;
 
     loadGame() {
 

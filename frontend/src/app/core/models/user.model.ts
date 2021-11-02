@@ -1,10 +1,10 @@
 export class User {
-    email: String;
-    user: String;
-    name: String;
-    img: String;
-    title: String;
-    token: String;
+    email: string;
+    user: string;
+    name: string;
+    img: string;
+    title: string;
+    token: string;
 
     constructor(
         email: string,
