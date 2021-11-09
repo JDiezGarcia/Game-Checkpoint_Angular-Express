@@ -19,6 +19,7 @@ export class GamesComponent implements OnInit {
 
   setTotalGame(total: number) {
     this.totalPages = Math.ceil(total / this.listConfig.filters.limit);
+    console.log(this.totalPages)
   }
 
   //--[TO ADD THE NEW PAGE TO PARAMS]--\\

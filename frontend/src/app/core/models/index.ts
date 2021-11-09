@@ -8,3 +8,5 @@ export * from './category.model';
 export * from './profile.model';
 export * from './errors.model';
 export * from './details.model';
+export * from './thumbnail.model';
+export * from './post-comment-config.model';

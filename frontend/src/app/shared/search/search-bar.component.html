@@ -16,9 +16,9 @@
 </form>
 <!--NG-HIDE-->
 <div [hidden]="noQuery" class="card overflow-auto search-items">
-  <span [hidden]="!noMatch && !noQuery">No hay resultados de la busqueda</span>
-  <ul [hidden]="noMatch" class="list-group list-group-flush">
-    
+  <span [hidden]="!noMatchG && !noQuery">There isn't games with that search</span>
+  <span [hidden]="!noMatchU && !noQuery">There isn't users with that search</span>
+  <ul [hidden]="noMatchG" class="list-group list-group-flush">
     <li *ngFor="let game of searchGames" class="list-group-item game-item" (click)="redirectDetails(game.slug)">
       <div class="row">
         <div class="col-4 img-search">
@@ -30,6 +30,23 @@
           </div>
           <div class="row">
             <div style="font-weight: bold" class="col">bottones</div>
+          </div>
+        </div>
+      </div>
+    </li>
+  </ul>
+  <ul [hidden]="noMatchU" class="list-group list-group-flush">
+    <li *ngFor="let user of searchUsers" class="list-group-item game-item" (click)="redirectProfile(user.user)">
+      <div class="row">
+        <div class="col-4 img-search">
+          <img src="{{user.img}}" />
+        </div>
+        <div class="col-8">
+          <div class="row">
+            <div style="font-size: 18px" class="col">{{user.user}}</div>
+          </div>
+          <div class="row">
+            <div style="font-weight: bold" class="col">{{user.title}}</div>
           </div>
         </div>
       </div>

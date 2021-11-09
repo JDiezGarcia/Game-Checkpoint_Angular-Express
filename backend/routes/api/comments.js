@@ -47,7 +47,7 @@ router.post('/game/:game', auth.required, function (req, res, next) {
             user.changeRespect(100);
             user.save();
             return req.game.save().then(function () {
-                res.json({ game: req.game.toDetailsJSONFor(user) });
+                res.json({ comment: comment.toCommentJSONFor(user) });
             })
 
         })
@@ -66,7 +66,7 @@ router.post('/user/:user', auth.required, async function (req, res, next) {
             user.changeRespect(100);
             user.save();
             return req.user.save().then(function () {
-                res.json({ user: req.user.toProfileJSONFor(user) });
+                res.json({ comment: comment.toCommentJSONFor(user) });
             });
         });
     }).catch(next);
@@ -89,9 +89,8 @@ router.post('/game/:game/:comment', auth.required, async function (req, res, nex
             user.changeRespect(100);
             user.save();
             return req.comment.save().then(function () {
-                Game.findById(req.game._id).then(function (game) {
-                    res.json({ game: game.toDetailsJSONFor(user) });
-                })
+                console.log(comment,"A");
+                res.json({ comment: comment.toCommentJSONFor(user) });
             });
         });
     }).catch(next);
@@ -116,10 +115,8 @@ router.post('/user/:user/:comment', auth.required, async function (req, res, nex
             user.changeRespect(100);
             user.save();
             return req.comment.save().then(function () {
-                User.findById(req.user._id).then(function (profile) {
-                    res.json({ user: profile.toProfileJSONFor(user) });
-
-                })
+                console.log(comment,"a");
+                res.json({ comment: comment.toCommentJSONFor(user) });
             });
         });
 

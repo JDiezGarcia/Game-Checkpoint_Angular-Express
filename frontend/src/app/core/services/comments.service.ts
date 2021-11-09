@@ -12,22 +12,25 @@ export class CommentsService {
     private apiService: ApiService
   ) {}
 
-  add(slug: string, payload: Object): Observable<Comment> {
+  add(id: string, type: string, payload: Object): Observable<{comment: Comment}> {
     return this.apiService
     .post(
-      `/articles/${slug}/comments`,
-      { comment: { body: payload } }
+      `/comments/${type}/${id}`,
+      { content: payload }
     ).pipe(map(data => data.comment));
   }
 
-  getAll(slug: string): Observable<Comment[]> {
-    return this.apiService.get(`/articles/${slug}/comments`)
-      .pipe(map(data => data.comments));
+  reply(commentId: string, id: string, type: string, payload: Object): Observable<Comment> {
+    return this.apiService
+      .post(
+        `/comments/${type}/${id}/${commentId}`,
+        { content: payload } 
+      ).pipe(map(data => data.comment));
   }
 
-  destroy(commentId: string, slug: string) {
+  destroy(commentId: string, id: string, type: string) {
     return this.apiService
-           .delete(`/articles/${slug}/comments/${commentId}`);
+           .delete(`/comments/${type}/${id}/${commentId}`);
   }
 
 }

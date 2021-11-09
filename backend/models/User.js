@@ -43,9 +43,9 @@ UserSchema.methods.toProfileJSONFor = function (user) {
         title: this.title,
         name: this.name,
         img: this.img || 'https://static.productionready.io/images/smiley-cyrus.jpg',
-        // comments: this.comments.map(comment => {
-        //     return comment.toCommentJSONFor();
-        // }),
+        comments: this.comments.map(comment => {
+            return comment.toCommentJSONFor(user);
+        }),
         following: user ? user.isFollowing(this._id) : false
 
     };
@@ -190,21 +190,24 @@ UserSchema.methods.isFollowing = function (id) {
 };
 
 //--[Method Follow Game]--\\
-UserSchema.methods.doGameFollow = function (id) {
+UserSchema.methods.doGameFollow = function (id, status) {
     let follow = true;
+    let finished = status === 'finished' ? 1 : 0;
+    let respect = finished === 1 ? 200 : 100;
     this.gamesFollow.find(o => {
         if (String(o._id) === String(id)) {
             follow = false;
         }
-
+        
     })
+
     if (follow) {
         this.gamesFollow.push({
             _id: id,
-            status: "pending",
-            finished: 0
+            status: status,
+            finished: finished
         })
-        this.changeRespect(100);
+        this.changeRespect(respect);
     }
     return this.save();
 }
@@ -218,15 +221,16 @@ UserSchema.methods.undoGameFollow = function (id) {
 
 //--[Method Change Status]--\\
 UserSchema.methods.changeStatus = function (id, newStatus) {
+    console.log(newStatus)
     this.gamesFollow.find(game => {
-        if (String(game._id) === String(id)) {
+        if (String(game._id._id) === String(id)) {
+            console.log("entreeeeeeeeeeeeee")
             game.status = newStatus;
             if (newStatus === "finished") {
                 game.finished += 1;
                 this.changeRespect(200);
             }
         }
-
     })
     return this.save();
 };

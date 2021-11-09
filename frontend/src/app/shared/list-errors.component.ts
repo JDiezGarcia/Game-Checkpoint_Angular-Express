@@ -11,6 +11,7 @@ export class ListErrorsComponent {
 
   @Input()
   set errors(errorList: Errors) {
+    console.log(errorList)
     this.formattedErrors = Object.keys(errorList.errors || {})
       .map(key => `${key} ${errorList.errors[key]}`);
   }

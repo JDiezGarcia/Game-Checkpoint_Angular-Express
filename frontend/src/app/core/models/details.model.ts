@@ -7,7 +7,14 @@ export class Details {
     img: string;
     baseHours: Number;
     universe: string;
-    rating: number;
+    rating: {
+        rating: number,
+        votes: number
+    };
+    rate: number | boolean;
+    status: string;
+    comments: Comment[];
+    isFavorite: boolean;
 
     constructor(
         slug: string,
@@ -17,7 +24,14 @@ export class Details {
         img: string,
         baseHours: number,
         universe: string,
-        rating: number
+        rating: {
+            rating: number,
+            votes: number
+        },
+        rate: number | boolean,
+        status: string,
+        comments: Comment[],
+        isFavorite: boolean
     ) {
         this.slug = slug;
         this.name = name;
@@ -27,5 +41,9 @@ export class Details {
         this.baseHours = baseHours;
         this.universe = universe;
         this.rating = rating;
+        this.rate = rate;
+        this.status = status;
+        this.comments = comments;
+        this.isFavorite = isFavorite;
     }
 }

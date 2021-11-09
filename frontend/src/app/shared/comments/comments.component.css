@@ -1,0 +1,58 @@
+.comment-user{
+    display: grid;
+    grid-template-columns: 5% repeat(2, 47.5%);
+    grid-template-areas: "img user btn";
+}
+
+.user-data{
+    grid-area: user;
+    display: grid;
+    grid-template-rows: repeat(2, 50%);
+    grid-template-areas:
+    "user-data"
+    "user-date";
+    justify-content: flex-start;
+    
+}
+
+.user-img{
+    grid-area: img;
+    display: flex;
+    justify-content: center;
+}
+
+span.thumbnail{
+    grid-area: user-data;
+}
+
+div.post-date{
+    margin-top: 2px;
+    grid-area: user-date;
+    font-size: 12px;
+}
+
+.user-buttons{
+    grid-area: btn;
+    display: flex;
+    justify-content: flex-end;
+}
+
+
+span.thumbnail a{
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+span.thumbnail a:hover{
+    color: rgb(185, 185, 185);
+}
+
+span.thumbnail span.user-title{
+    font-size: 10px;
+}
+
+.comment-author-img{
+    width: 30px; 
+    border-radius: 100%;
+}

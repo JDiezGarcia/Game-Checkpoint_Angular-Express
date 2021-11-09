@@ -1,18 +1,24 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { GamesService, Game, GameFilters } from '../../core';
+import { GamesService, Game, GameFilters, Thumbnail, ProfilesService } from '../../core';
 @Component({
     selector: 'app-search-bar',
     styleUrls: ['search-bar.component.css'],
     templateUrl: './search-bar.component.html',
 })
 export class SearchBarComponent {
-    constructor(private gamesService: GamesService, private router: Router) { }
+    constructor(
+        private gamesService: GamesService,
+        private router: Router,
+        private profileService: ProfilesService
+    ) { }
     @ViewChild('query') query!: ElementRef;
     noQuery: Boolean = true;
-    noMatch: Boolean = true;
-    searchGames!: Game[];
+    noMatchG: Boolean = true;
+    noMatchU: Boolean = true;
+    searchGames: Game[] = [];
+    searchUsers: Thumbnail[] = [];
     filters: GameFilters = {
         limit: 5,
         offset: 0,
@@ -24,11 +30,20 @@ export class SearchBarComponent {
             this.gamesService.query(this.filters).subscribe((data) => {
                 this.noQuery = false;
                 if (data.gamesCount > 0) {
-                    this.noMatch = false;
-                    console.log('entro');
+                    this.noMatchG = false;
                     this.searchGames = data.games;
-                } else {
-                    this.noMatch = true;
+                    console.log(data.games)
+                }else{
+                    this.noMatchG = true;
+                }
+            });
+            this.profileService.searchUsers(query, 3).subscribe((data) => {
+                console.log(data);
+                if (data.length > 0) {
+                    this.noMatchU = false;
+                    this.searchUsers = data;
+                }else{
+                    this.noMatchU = true;
                 }
             });
         } else {
@@ -50,9 +65,15 @@ export class SearchBarComponent {
         this.removeItems();
     }
 
+    redirectProfile(user: String) {
+        this.router.navigate(['/profile', user]);
+        this.removeItems();
+    }
+
     removeItems() {
         this.noQuery = true;
-        this.noMatch = true;
+        this.noMatchU = true;
+        this.noMatchG = true;
         this.query.nativeElement.value = '';
     }
 }

@@ -1,7 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { User, UserService, Profile, GameListConfig } from '../core';
+import {
+    User,
+    UserService,
+    Profile,
+    GameListConfig,
+    ProfilesService,
+    PostCommentConfig,
+    CommentsService,
+    Comment
+} from '../core';
 import { concatMap, tap } from 'rxjs/operators';
 
 @Component({
@@ -12,10 +21,13 @@ export class ProfileComponent implements OnInit {
     constructor(
         private route: ActivatedRoute,
         private userService: UserService,
-        private router: Router
+        private profileService: ProfilesService,
+        private router: Router,
+        private commentService: CommentsService
     ) { }
 
     profile!: Profile;
+    comments!: Comment[];
     currentUser!: User;
     isUser!: boolean;
     gamesStatus: string = 'playing';
@@ -25,6 +37,7 @@ export class ProfileComponent implements OnInit {
         pending: 0,
         finished: 0
     };
+    commentConfig!: PostCommentConfig;
 
     setStatus(status: any) {
         this.statusCount = status;
@@ -53,7 +66,24 @@ export class ProfileComponent implements OnInit {
                 offset: 0
             },
         };
+
+        this.commentConfig = {
+            type: 'user',
+            id: this.profile.user,
+            reply: {
+                is: "no"
+            }
+        }
+
+        this.comments = this.profile.comments as any;
+        this.orderComments();
         this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    }
+
+    orderComments(){
+        this.comments.sort(function (a: Comment, b: Comment) {
+            return +new Date(b.createdAt) - +new Date(a.createdAt);
+        });
     }
 
     changeStatus(status: string) {
@@ -61,10 +91,10 @@ export class ProfileComponent implements OnInit {
         this.ngOnInit();
     }
 
-    checkStatus(){
+    checkStatus() {
         switch (this.gamesStatus) {
             case "playing":
-                if (this.statusCount.playing === 0){
+                if (this.statusCount.playing === 0) {
                     this.changeStatus("pending");
                 }
                 break;
@@ -74,14 +104,34 @@ export class ProfileComponent implements OnInit {
                 }
                 break;
             case "finished":
-                if (this.statusCount.playing === 0) {
+                if (this.statusCount.finished === 0) {
                     this.changeStatus("none");
                 }
                 break;
         }
     }
-    onToggleFollowing(following: boolean) {
+
+    toggleFollowing(following: boolean) {
+
+        if (following) {
+            this.profileService.follow(this.profile.user).subscribe();
+        } else {
+            this.profileService.unfollow(this.profile.user).subscribe();
+        }
         this.profile.following = following;
     }
 
+    onDeleteComment(deleteConfig: PostCommentConfig) {
+
+        this.commentService.destroy(deleteConfig.reply.comment as string, deleteConfig.id, deleteConfig.type)
+            .subscribe(
+                success => {
+                    this.comments = this.comments.filter((comment) => comment.id !== deleteConfig.reply.comment);
+                }
+            );
+    }
+    onAddComment(comment: Comment) {
+        this.comments.push(comment);
+        this.orderComments();
+    }
 }

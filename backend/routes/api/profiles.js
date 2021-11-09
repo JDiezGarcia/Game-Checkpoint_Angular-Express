@@ -50,11 +50,38 @@ router.delete('/:user/follow', auth.required, function (req, res, next) {
     }).catch(next);
 });
 
-router.get('/:user/games', auth.required, function (req, res, next) {
+router.get('/:user/games', auth.required, function (req, res) {
     User.findById(req.payload.id).then(function (user) {
         if (!user) { return res.sendStatus(401); }
 
         return res.json(req.profile.toGamesFollowJSONFor(req.query.type, user));
     });
 })
+
+router.get('/search/users', auth.required, async function (req, res, next){
+    User.findById(req.payload.id).then( async function (user) {
+        if (!user) { return res.sendStatus(401); }
+        console.log("a")
+        var query = {};
+        var limit = typeof req.query.limit !== 'undefined' ? req.query.limit : 10;
+        if (typeof req.query.query !== 'undefined') {
+            query.user = { $regex: ".*" + req.query.query + ".*", $options: "i" };
+        }
+        var userList = User.find(query).limit(Number(limit)).exec();
+        try {
+            userList = await userList;
+        } catch (error) {
+            console.log(error);
+            return res.status(500).send('Error: User List not Found');
+        }
+
+        return res.json({
+            users: userList.map(function (user) {
+                return user.toThumbnailJSONFor(user);
+            }),
+        });
+    });
+})
+
+
 module.exports = router;

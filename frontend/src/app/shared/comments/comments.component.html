@@ -1,0 +1,58 @@
+<div class="card">
+  <div
+    class="card-header"
+    style="background-color: rgb(129, 64, 129); color: white"
+  >
+    <div class="card-block">
+      <div class="comment-user">
+        <div class="user-img">
+          <a [routerLink]="['/profile', author.user]">
+            <img [src]="author.img" class="comment-author-img" />
+          </a>
+        </div>
+        <div class="user-data">
+          <span class="thumbnail">
+            <span class="user-name">
+              <a [routerLink]="['/profile', author.user]">
+                {{ author.user }}
+              </a>
+            </span>
+            <span class="user-title"> [{{ author.title }}] </span>
+          </span>
+          <div class="post-date">
+            <span class="date-posted">
+              {{ commentData.createdAt | date: "longDate" }}
+            </span>
+          </div>
+        </div>
+        <div class="user-buttons">
+          <span class="mod-options" [hidden]="!canModify">
+            <i class="fa fa-trash" (click)="deleteClicked()"></i>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card-body">
+    <p class="card-text" [innerHTML]="commentData.content">
+      
+    </p>
+  </div>
+  <div class="card-footer" [hidden]="depth > 1">
+    <div class="replies-list" *ngIf="replies.length > 0 && depth == 1">
+      <app-comments
+        *ngFor="let reply of replies"
+        [comment]="reply"
+        [depth]="depth + 1"
+        style="margin: 20px"
+        [postConfig]="commentConfig"
+        (deleteComment)="onDeleteReply($event)"
+      ></app-comments>
+    </div>
+    <app-post-comment
+      (addComment)="onAddReply($event)"
+      [config]="commentConfig"
+      [hidden]="depth > 1"
+    ></app-post-comment>
+  </div>
+</div>

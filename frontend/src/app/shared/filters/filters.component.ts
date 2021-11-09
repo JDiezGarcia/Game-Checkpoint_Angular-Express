@@ -22,12 +22,13 @@ export class FiltersComponent {
   }
 
   query!: GameFilters;
-  filters!: Category[];
+  filters: Category[] = [];
   checks: string[] = [];
 
   loadFilters(){
     this.categoriesService.getAll(this.query).subscribe((data) =>{
       this.filters = data;
+      console.log(this.filters)
       this.filters.sort((a, b) => a._id < b._id ? -1 : a._id > b._id ? 1 : 0)
       for (let i = 0; i < this.filters.length; i++) {
         this.checks.forEach(filter => {

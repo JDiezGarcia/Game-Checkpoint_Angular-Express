@@ -12,9 +12,8 @@ export class GameCardComponent {
     constructor(
         private gamesService: GamesService,
     ) { }
-    @Output() removeGame = new EventEmitter();
+
     @Input() set game(game: Game) {
-        console.log(game)
         this.infoGame = game;
     };
 
@@ -22,14 +21,13 @@ export class GameCardComponent {
 
     follow(slug: string) {
         console.log(this.infoGame);
-        this.gamesService.gameFollow(slug).subscribe()
+        this.gamesService.gameFollow(slug, "pending").subscribe()
         this.infoGame.status = 'pending';
     }
 
     unfollow(slug: string) {
         this.gamesService.gameUnfollow(slug).subscribe();
         this.infoGame.status = false;
-        this.removeGame.emit(slug);
     }
 
     // // onToggleFavorite(favorited: boolean) {

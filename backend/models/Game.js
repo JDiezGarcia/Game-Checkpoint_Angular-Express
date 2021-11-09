@@ -46,7 +46,7 @@ GameSchema.methods.toDetailsJSONFor = function (user) {
         baseHours: this.baseHours,
         universe: this.universe,
         rating: this.calculateRating(),
-        rate: user ? this.myRate(user) : false,
+        rate: user ? this.myRate(user) : 0,
         comments: this.comments.map(comment => {
             return comment.toCommentJSONFor();
         }),
@@ -104,7 +104,11 @@ GameSchema.methods.myRate = function (user) {
 GameSchema.methods.calculateRating = function (){
     let ratingArr = this.rating.map(rate => rate.rate);
     let rating = (ratingArr.reduce((x, y) => x + y, 0)) / ratingArr.length;
-    return rating;
+    let ratingObj = {
+        rating: rating,
+        votes: ratingArr.length
+    }
+    return ratingObj;
 }
 
 

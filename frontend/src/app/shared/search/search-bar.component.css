@@ -4,6 +4,7 @@
     max-height: 300px; 
     position: absolute; 
     z-index: 5;
+    text-align: center;
 }
 
 .img-search img{

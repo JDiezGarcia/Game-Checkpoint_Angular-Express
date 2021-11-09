@@ -1,1 +1,15 @@
-<app-game-details [game]="game"></app-game-details>
+<app-game-details [details]="game"></app-game-details>
+<div class="comment-list" style="margin: 50px">
+  <h3>COMMENTS</h3>
+  <h5 style="color: grey">
+    <i class="fa fa-exclamation-circle"></i> DON'T POST SPOILERS HERE!
+  </h5>
+  <app-post-comment (addComment)="onAddComment($event)" [config]="commentConfig"></app-post-comment>
+  <app-comments
+    *ngFor="let oneComment of comments"
+    [comment]="oneComment"
+    style="margin: 10px"
+    [postConfig]="commentConfig"
+    (deleteComment)="onDeleteComment($event)"
+  ></app-comments>
+</div>

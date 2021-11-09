@@ -15,6 +15,8 @@ import { PaginationComponent } from './pagination/pagination.component';
 import { FiltersComponent } from './filters/filters.component';
 import { ListErrorsComponent } from './list-errors.component';
 import { ShowAuthedDirective } from './show-authed.directive';
+import { CommentsComponent } from './comments/comments.component';
+import { PostCommentComponent } from './post-comment/post-comment.component';
 
 @NgModule({
   declarations: [
@@ -26,9 +28,11 @@ import { ShowAuthedDirective } from './show-authed.directive';
     SearchBarComponent,
     UserButtonsComponent,
     PaginationComponent,
+    CommentsComponent,
     FiltersComponent,
     ListErrorsComponent,
-    ShowAuthedDirective
+    ShowAuthedDirective,
+    PostCommentComponent
   ],
   imports: [
     CommonModule,
@@ -47,13 +51,15 @@ import { ShowAuthedDirective } from './show-authed.directive';
     UserButtonsComponent,
     PaginationComponent,
     FiltersComponent,
+    CommentsComponent,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
     ToastrModule,
     RouterModule,
     ListErrorsComponent,
-    ShowAuthedDirective
+    ShowAuthedDirective,
+    PostCommentComponent
   ],
 })
 export class SharedModule {}

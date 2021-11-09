@@ -1,0 +1,17 @@
+<form class="card comment-form">
+  <fieldset>
+    <div class="card-block">
+      <textarea
+        class="form-control"
+        placeholder="Write a {{type}}..."
+        rows="3"
+        [formControl]="commentControl"
+      ></textarea>
+    </div>
+    <div class="card-footer">
+      <img [src]="currentUser" class="comment-author-img" />
+      <button class="btn btn-sm btn-primary"
+      [ngClass]="{'disabled': commentControl.value == null || commentControl.value.length == 0}" (click)="newComment()">Post Comment</button>
+    </div>
+  </fieldset>
+</form>

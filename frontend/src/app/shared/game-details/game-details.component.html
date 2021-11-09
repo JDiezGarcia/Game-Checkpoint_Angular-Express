@@ -1,49 +1,134 @@
-<div class="shop-page" style="margin-top: 20px;margin-bottom: 20px;">
+<div class="shop-page" style="margin-top: 20px; margin-bottom: 20px">
   <div id="shop-products" class="container">
     <div class="row">
       <div class="col-4">
-        <img style="max-width: 100%; display:block;" [src]="game.img" />
+        <img style="max-width: 100%; display: block" [src]="game.img" />
       </div>
-      <div class="col-8" style="margin: auto;">
+      <div class="col-8" style="margin: auto">
         <fieldset class="border p-2">
-            <legend class="control-label customer-legend pl-1 product-title">
-                {{game.name}}
-            </legend>
-            <h5 class="rating">
-                <span style="font-weight: bold;">Rating:</span>
-                <span>{{game.rating}}</span>
-            </h5>
-            <p class="views">
-                <span style="font-weight: bold;">Base Hours:</span>
-                <span>{{game.baseHours}}</span>
-            </p>
-                <p class="universe">
-                <span style="font-weight: bold;">Universe:</span>
-                <span>{{game.universe}}</span>
-            </p>
-            <p class="description">
-                <span style="font-weight: bold;">Description:</span>
-                <span>{{game.description}}</span>
-            </p>
-            <div class="categories">
-                <span style="font-weight: bold;">Platforms:</span>
-                <ul class="tag-list">
-                    <li class="tag-default tag-pill tag-outline" *ngFor="let category of game.categories">
-                    {{ category }}
+          <legend class="control-label customer-legend pl-1 product-title">
+            {{ game.name }}
+          </legend>
+          <h5 class="rating">
+            <span style="font-weight: bold">
+              <ng-container *ngIf="stars.fill > 0">
+                <i
+                  *ngFor="let fill of counter(stars.fill)"
+                  class="fas fa-star checked"
+                >
+                </i>
+              </ng-container>
+              <ng-container *ngIf="stars.half > 0">
+                <i
+                  *ngFor="let half of counter(stars.half)"
+                  class="fas fa-star-half checked"
+                >
+                </i>
+              </ng-container>
+              <ng-container *ngIf="stars.empty > 0">
+                <i
+                  *ngFor="let empty of counter(stars.empty)"
+                  class="far fa-star checked"
+                >
+                </i>
+              </ng-container>
+            </span>
+            <span>({{ votes }})</span>
+            <span style="display: inline-block; margin-left: 10px">
+              <ul class="navbar-nav">
+                <li class="nav-item dropdown">
+                  <a
+                    class="nav-link dropdown-toggle"
+                    href="#"
+                    id="navbarDarkDropdownMenuLink"
+                    role="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    Vote
+                  </a>
+                  <ul
+                    style="min-width: min-content"
+                    class="dropdown-menu dropdown-menu"
+                    aria-labelledby="navbarDarkDropdownMenuLink"
+                  >
+                    <li *ngFor="let num of [1, 2, 3, 4, 5]" (click)="setVote(num)">
+                      <a
+                        [ngClass]="{ 'my-rate': game.rate === num }"
+                        class="dropdown-item"
+                        >{{ num }}</a
+                      >
                     </li>
-                </ul>
-            </div>
-            <div class="action">
-                <button class="button-card add-to-cart btn btn-default" type="button"
-                    style="background-color:#66A6DB; color: white;">
-                    <span class="fa fa-shopping-cart"></span>
-                    Add to Cart..
-                </button>
-                <button class="button-card btn btn-success" style="width:50px !important;">
-                    <i class="fa fa-heart-o"></i>
-                    <i class="fa fa-heart"></i>
-                </button>
-            </div>
+
+                    <li *ngIf="game.rate" (click)="removeVote()">
+                      <a class="dropdown-item">Remove</a>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </span>
+          </h5>
+          <p class="views">
+            <span style="font-weight: bold">Base Hours:</span>
+            <span>{{ game.baseHours }}</span>
+          </p>
+          <p class="universe">
+            <span style="font-weight: bold">Universe:</span>
+            <span>{{ game.universe }}</span>
+          </p>
+          <p class="description">
+            <span style="font-weight: bold">Description:</span>
+            <span>{{ game.description }}</span>
+          </p>
+          <div class="categories">
+            <span style="font-weight: bold">Platforms:</span>
+            <ul class="tag-list">
+              <li
+                class="tag-default tag-pill tag-outline"
+                *ngFor="let category of game.categories"
+              >
+                {{ category }}
+              </li>
+            </ul>
+          </div>
+          <div class="dropdown btn-group">
+            <button class="button-card btn btn-success" (click)="toogleFav()">
+              <i *ngIf="!favorite" class="far fa-heart"></i>
+              <i *ngIf="favorite === true" class="fas fa-heart"></i>
+            </button>
+            <a
+              class="btn btn-secondary dropdown-toggle"
+              href="#"
+              role="button"
+              id="dropdownMenuLink"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              <span *ngIf="status === 'none'">Select a status...</span>
+              <span *ngIf="status !== 'none'">{{ status }}</span>
+            </a>
+
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+              <li>
+                <a class="dropdown-item" (click)="changeStatus('pending')"
+                  >Pending</a
+                >
+              </li>
+              <li>
+                <a class="dropdown-item" (click)="changeStatus('playing')"
+                  >Playing</a
+                >
+              </li>
+              <li>
+                <a class="dropdown-item" (click)="changeStatus('finished')"
+                  >Finished</a
+                >
+              </li>
+              <li *ngIf="status !== 'none'" (click)="unFollow()">
+                <a class="dropdown-item">Unfollow</a>
+              </li>
+            </ul>
+          </div>
         </fieldset>
       </div>
     </div>

@@ -5,6 +5,7 @@ export class Profile {
     img: string;
     title: string;
     following: boolean;
+    comments: Comment[];
 
     constructor(
         email: string,
@@ -12,7 +13,8 @@ export class Profile {
         name: string,
         img: string,
         title: string,
-        following: boolean
+        following: boolean,
+        comments: Comment[]
     ) {
         this.email = email;
         this.user = user;
@@ -20,5 +22,6 @@ export class Profile {
         this.img = img;
         this.title = title;
         this.following = following;
+        this.comments = comments;
     }
 }

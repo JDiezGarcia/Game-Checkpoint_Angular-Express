@@ -11,7 +11,7 @@ import { Errors, User, UserService } from '../core';
 export class SettingsComponent implements OnInit {
     user: User = {} as User;
     settingsForm: FormGroup;
-    errors!: Errors;
+    errors: Errors = {errors: {}};
     isSubmitting = false;
 
     constructor(

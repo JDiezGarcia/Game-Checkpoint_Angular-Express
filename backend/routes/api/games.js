@@ -6,7 +6,6 @@ var User = mongoose.model('User');
 
 
 router.param('game', async function (req, res, next, slug) {
-    console.log(slug)
     await Game.findOne({ slug: slug })
         .then(function (game) {
             if (!game) { return res.sendStatus(404); }
@@ -79,11 +78,11 @@ router.get('/details/:game', auth.required, async function (req, res, next) {
 
 router.post('/:game/follow', auth.required, function (req, res, next) {
     let gameFollow = req.game._id;
-
+    let status = req.body.status;
     User.findById(req.payload.id).then(function (user) {
         if (!user) { return res.sendStatus(401); }
 
-        return user.doGameFollow(gameFollow).then(function () {
+        return user.doGameFollow(gameFollow, status).then(function () {
             return res.json({ isFollow: true });
         });
     }).catch(next);
@@ -107,7 +106,7 @@ router.post('/:game/favorite', auth.required, function (req, res, next) {
     User.findById(req.payload.id).then(function (user) {
         if (!user) { return res.sendStatus(401); }
         return user.favorite(gameID).then(function () {
-            return res.json({ game: req.game.toDetailsJSONFor(user) });
+            return res.json({ isFavorite: true });
         });
     }).catch(next);
 });
@@ -118,7 +117,7 @@ router.delete('/:game/favorite', auth.required, function (req, res, next) {
     User.findById(req.payload.id).then(function (user) {
         if (!user) { return res.sendStatus(401); }
         return user.unfavorite(gameID).then(function () {
-            return res.json({ game: req.game.toDetailsJSONFor(user) });
+            return res.json({ isFavorite: false });
         });
     }).catch(next);
 });
@@ -128,9 +127,9 @@ router.put('/:game/changeStatus', auth.required, function (req, res, next) {
     let status = req.body.newStatus;
     User.findById(req.payload.id).then(function (user) {
         if (!user) { return res.sendStatus(401); }
-        if (status !== undefined) {
+        if (status) {
             return user.changeStatus(gameID, status).then(function () {
-                return res.json({ game: req.game.toDetailsJSONFor(user) });
+                return res.json({ newStatus: true });
             });
         }
     }).catch(next);

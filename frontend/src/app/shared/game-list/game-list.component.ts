@@ -23,7 +23,6 @@ export class GameListComponent {
     @Output() setStatus = new EventEmitter();
     @Input() set config(config: GameListConfig) {
         if (config) {
-            console.log(config.type)
             this.query = config.filters;
             this.type = config.type;
             this.user = config.user;
@@ -38,11 +37,9 @@ export class GameListComponent {
     loading: boolean = false;
 
     removeGame(slug: string){
-        console.log(this.results)
         let game: Game | undefined = this.results.find(g => g.slug == slug);
         let i = this.results.indexOf(game as Game);
         this.results.splice(i, 1);
-        console.log(i)
     }
     loadGames() {
         this.loading = true;

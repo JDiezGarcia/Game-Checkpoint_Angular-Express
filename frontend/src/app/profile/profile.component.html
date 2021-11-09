@@ -13,7 +13,23 @@
             [hidden]="!isUser"
             class="btn btn-sm btn-outline-secondary action-btn"
           >
-            <i class="ion-gear-a"></i> Edit Profile Settings
+            <i class="fa fa-gear"></i> Edit Profile Settings
+          </a>
+          <a
+            *ngIf="!profile.following"
+            (click)="toggleFollowing(true)"
+            class="btn btn-success"
+            [hidden]="isUser"
+          >
+            <span>Follow</span>
+          </a>
+          <a
+            *ngIf="profile.following"
+            (click)="toggleFollowing(false)"
+            class="btn btn-success"
+            [hidden]="isUser"
+          >
+            <span>Following</span>
           </a>
         </div>
       </div>
@@ -30,11 +46,12 @@
                 class="nav-link"
                 (click)="changeStatus('playing')"
                 [ngClass]="{
-                    'active': gamesStatus === 'playing' && statusCount.playing !== 0,
-                    'disabled': statusCount.playing === 0
+                  active:
+                    gamesStatus === 'playing' && statusCount.playing !== 0,
+                  disabled: statusCount.playing === 0
                 }"
               >
-                Playing({{statusCount.playing}})
+                Playing({{ statusCount.playing }})
               </a>
             </li>
             <li class="nav-item">
@@ -42,11 +59,12 @@
                 class="nav-link"
                 (click)="changeStatus('pending')"
                 [ngClass]="{
-                    'active': gamesStatus === 'pending' && statusCount.pending !== 0,
-                    'disabled': statusCount.pending === 0
+                  active:
+                    gamesStatus === 'pending' && statusCount.pending !== 0,
+                  disabled: statusCount.pending === 0
                 }"
               >
-                Pending({{statusCount.pending}})
+                Pending({{ statusCount.pending }})
               </a>
             </li>
             <li class="nav-item">
@@ -54,23 +72,39 @@
                 class="nav-link"
                 (click)="changeStatus('finished')"
                 [ngClass]="{
-                    'active': gamesStatus === 'finished' && statusCount.finished !== 0,
-                    'disabled': statusCount.finished === 0
+                  active:
+                    gamesStatus === 'finished' && statusCount.finished !== 0,
+                  disabled: statusCount.finished === 0
                 }"
               >
-                Finished({{statusCount.finished}})
+                Finished({{ statusCount.finished }})
               </a>
             </li>
           </ul>
         </div>
 
         <app-game-list
-            *ngIf="gamesStatus !== 'none'"
-            (setStatus)="setStatus($event)"
-            [config]="listConfig"
+          *ngIf="gamesStatus !== 'none'"
+          (setStatus)="setStatus($event)"
+          [config]="listConfig"
         ></app-game-list>
         <div *ngIf="gamesStatus === 'none'">
-            IS TIME TO START USING OUR APPLICATION! GO TO GAMES AND FOLLOW SOME!
+          IS TIME TO START USING OUR APPLICATION! GO TO GAMES AND FOLLOW SOME!
+        </div>
+
+        <div class="list-comments">
+          <h3>COMMENTS</h3>
+          <h5 style="color: grey">
+            <i class="fa fa-exclamation-circle"></i> BE RESPECTFUL!
+          </h5>
+          <app-post-comment (addComment)="onAddComment($event)" *ngIf="comments" [config]="commentConfig"></app-post-comment>
+          <app-comments
+            *ngFor="let oneComment of comments"
+            [comment]="oneComment"
+            style="margin: 10px"
+            [postConfig]="commentConfig"
+            (deleteComment)="onDeleteComment($event)"
+          ></app-comments>
         </div>
       </div>
     </div>
