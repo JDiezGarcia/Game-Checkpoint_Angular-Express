@@ -23,7 +23,7 @@ export class ProfileComponent implements OnInit {
         private userService: UserService,
         private profileService: ProfilesService,
         private router: Router,
-        private commentService: CommentsService
+        private commentService: CommentsService,
     ) { }
 
     profile!: Profile;

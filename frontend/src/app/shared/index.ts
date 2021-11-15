@@ -14,3 +14,4 @@ export * from './shared.module';
 export * from './show-authed.directive';
 export * from './comments';
 export * from './post-comment';
+export * from './show-role.directive';

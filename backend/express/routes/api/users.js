@@ -12,6 +12,17 @@ router.get('/user', auth.required, function (req, res, next) {
     }).catch(next);
 });
 
+router.get("/user/token-gql", auth.required, function (req, res, next) {
+    User.findById(req.payload.id)
+        .then(function (user) {
+            if (!user) {
+                return res.sendStatus(401);
+            }
+            return res.json(user);
+        })
+        .catch(next);
+});
+
 //--[UPDATE USER]--\\
 router.put('/user', auth.required, function (req, res, next) {
     User.findById(req.payload.id).then(function (user) {

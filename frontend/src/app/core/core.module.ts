@@ -11,7 +11,8 @@ import {
     CommentsService,
     JwtService,
     ProfilesService,
-    UserService
+    UserService,
+    RolesGuardService
 } from './services';
 
 @NgModule({
@@ -28,7 +29,8 @@ import {
         CommentsService,
         JwtService,
         ProfilesService,
-        UserService
+        UserService,
+        RolesGuardService
     ]
 })
 export class CoreModule { }

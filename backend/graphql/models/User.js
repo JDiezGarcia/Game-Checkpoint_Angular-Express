@@ -1,9 +1,6 @@
 //--[DECLARATIONS]--\\
 var mongoose = require('mongoose');
-var uniqueValidator = require('mongoose-unique-validator');
 var crypto = require('crypto');
-var jwt = require('jsonwebtoken');
-var secret = process.env.JWT_SECRET;
 var Populate = require('../db/populate');
 
 
@@ -31,98 +28,6 @@ var UserSchema = new mongoose.Schema({
 //--[Populate all comment when a find one is request]--\\
 UserSchema.pre('findOne', Populate('comments'));
 UserSchema.pre('findOne', Populate('gamesFollow._id'))
-//--[Profile Serializer]--\\
-/*--{
-    Add User-Count Followers
-    Add User-Count Follow
-}--*/
-UserSchema.methods.toProfileJSONFor = function (user) {
-    return {
-        email: this.email,
-        user: this.user,
-        title: this.title,
-        name: this.name,
-        img: this.img || 'https://static.productionready.io/images/smiley-cyrus.jpg',
-        comments: this.comments.map(comment => {
-            return comment.toCommentJSONFor(user);
-        }),
-        following: user ? user.isFollowing(this._id) : false
-
-    };
-};
-
-UserSchema.methods.toGamesFollowJSONFor = function (type, user) {
-    let playing = 0;
-    let pending = 0;
-    let finished = 0;
-
-    return {
-        games: this.gamesFollow.map(game => {
-            switch (game.status) {
-                case "playing":
-                    playing += 1;
-                    break;
-                case "pending":
-                    pending += 1;
-                    break;
-                case "finished":
-                    finished += 1;
-                    break;
-            }
-            if (game.status === type) {
-
-                return game._id.toListJSONFor(user);
-            }
-        }),
-        gamesCounts: {
-            playing: playing,
-            pending: pending,
-            finished: finished
-        }
-    }
-}
-//--[Comment Thumbnail Serializer]--\\
-UserSchema.methods.toThumbnailJSONFor = function () {
-    return {
-        user: this.user,
-        title: this.title,
-        img: this.img || 'https://static.productionready.io/images/smiley-cyrus.jpg',
-    };
-};
-
-//--[ UserAuth Serializer]--\\
-UserSchema.methods.toAuthJSON = function () {
-    return {
-        user: this.user,
-        email: this.email,
-        token: this.generateJWT(),
-        name: this.name,
-        img: this.img,
-        title: this.title
-    };
-};
-
-UserSchema.plugin(uniqueValidator, { message: 'is already taken.' });
-
-//--[Method Same Pass]--\\
-UserSchema.methods.validPassword = function (password) {
-    var hash = crypto.pbkdf2Sync(password, this.salt, 10000, 512, 'sha512').toString('hex');
-    return this.hash === hash;
-};
-
-//--[Method Encrypt Pass]--\\
-UserSchema.methods.setPassword = function (password) {
-    this.salt = crypto.randomBytes(16).toString('hex');
-    this.hash = crypto.pbkdf2Sync(password, this.salt, 10000, 512, 'sha512').toString('hex');
-};
-
-//--[Method Generate Token]--\\
-UserSchema.methods.generateJWT = function () {
-    return jwt.sign({
-        id: this._id,
-        user: this.user,
-    }, secret);
-};
 
 //--[Method Set Game Fav]--\\
 UserSchema.methods.favorite = function (id) {
@@ -222,6 +127,7 @@ UserSchema.methods.undoGameFollow = function (id) {
 //--[Method Change Status]--\\
 UserSchema.methods.changeStatus = function (id, newStatus) {
     console.log(newStatus)
+    console.log(id)
     this.gamesFollow.find(game => {
         if (String(game._id._id) === String(id)) {
             console.log("entreeeeeeeeeeeeee")
@@ -263,6 +169,5 @@ UserSchema.methods.changeTitle = function () {
                             "Hacker";
 
 }
-
 
 mongoose.model('User', UserSchema);

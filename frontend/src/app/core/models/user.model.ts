@@ -5,6 +5,7 @@ export class User {
     img: string;
     title: string;
     token: string;
+    role: string;
 
     constructor(
         email: string,
@@ -12,7 +13,8 @@ export class User {
         name: string,
         img: string,
         title: string,
-        token: string
+        token: string,
+        role: string
     ) {
         this.email = email;
         this.user = user;
@@ -20,5 +22,6 @@ export class User {
         this.img = img;
         this.title = title;
         this.token = token;
+        this.role = role;
     }
 }

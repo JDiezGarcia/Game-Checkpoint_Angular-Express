@@ -15,6 +15,7 @@ import { PaginationComponent } from './pagination/pagination.component';
 import { FiltersComponent } from './filters/filters.component';
 import { ListErrorsComponent } from './list-errors.component';
 import { ShowAuthedDirective } from './show-authed.directive';
+import { ShowRoleDirective } from './show-role.directive';
 import { CommentsComponent } from './comments/comments.component';
 import { PostCommentComponent } from './post-comment/post-comment.component';
 
@@ -32,6 +33,7 @@ import { PostCommentComponent } from './post-comment/post-comment.component';
     FiltersComponent,
     ListErrorsComponent,
     ShowAuthedDirective,
+    ShowRoleDirective,
     PostCommentComponent
   ],
   imports: [
@@ -59,6 +61,7 @@ import { PostCommentComponent } from './post-comment/post-comment.component';
     RouterModule,
     ListErrorsComponent,
     ShowAuthedDirective,
+    ShowRoleDirective,
     PostCommentComponent
   ],
 })

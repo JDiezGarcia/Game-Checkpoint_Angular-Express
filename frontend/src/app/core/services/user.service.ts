@@ -15,6 +15,8 @@ export class UserService {
 
   private isAuthenticatedSubject = new ReplaySubject<boolean>(1);
   public isAuthenticated = this.isAuthenticatedSubject.asObservable();
+  private currentRoleSubject = new BehaviorSubject<string>('');
+  public currentRole = this.currentRoleSubject.asObservable();
 
   constructor (
     private apiService: ApiService,
@@ -45,6 +47,8 @@ export class UserService {
     this.currentUserSubject.next(user);
     // Set isAuthenticated to true
     this.isAuthenticatedSubject.next(true);
+
+    this.currentRoleSubject.next(user.role);
   }
 
   purgeAuth() {
@@ -54,6 +58,8 @@ export class UserService {
     this.currentUserSubject.next({} as User);
     // Set auth status to false
     this.isAuthenticatedSubject.next(false);
+
+    this.currentRoleSubject.next('');
   }
 
   attemptAuth(type: String , credentials: Object): Observable<User> {

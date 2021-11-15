@@ -23,6 +23,9 @@
         <li class="nav-item">
           <a class="nav-link" routerLink="/games">Games</a>
         </li>
+        <li *appRoleAuthed="'moderator'" class="nav-item">
+          <a class="nav-link" routerLink="/moderator">Moderator Panel</a>
+        </li>
       </ul>
     </div>
   </nav>

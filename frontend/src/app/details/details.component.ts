@@ -11,7 +11,7 @@ export class DetailsComponent implements OnInit {
     constructor(
         private route: ActivatedRoute,
         private router: Router,
-        private commentService: CommentsService
+        private commentService: CommentsService,
     ) { }
 
     game!: Details;
