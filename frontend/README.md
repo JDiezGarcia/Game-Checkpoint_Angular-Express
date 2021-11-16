@@ -1,27 +1,68 @@
-# GameCheckpoint
+# Game Checkpoint
+Creator: Fco. Javier Diez Garcia
+
+Type: CFGS Proyect
+
+School: IES L'Estacio
+
+Degree: Web Applications Development
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.2.6.
 
-## Development server
+# Index
+- [Game Checkpoint](#game-checkpoint)
+- [Index](#index)
+- [App](#app)
+  - [Modules](#modules)
+  - [Components](#components)
+  - [Services](#services)
+  - [Models](#models)
+  - [Guards](#guards)
+- [Dependencies](#dependencies)
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+# App
 
-## Code scaffolding
+## Modules
+***
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Components
+***
 
-## Build
+## Services
+***
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## Models
+***
 
-## Running unit tests
+## Guards
+***
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+# Dependencies
 
-## Running end-to-end tests
+You can find it all in the package.json
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+```json
+"dependencies": {
+    "@angular/animations": "~12.2.0",
+    "@angular/common": "~12.2.0",
+    "@angular/compiler": "~12.2.0",
+    "@angular/core": "~12.2.0",
+    "@angular/forms": "~12.2.0",
+    "@angular/platform-browser": "~12.2.0",
+    "@angular/platform-browser-dynamic": "~12.2.0",
+    "@angular/router": "~12.2.0",
+    "@apollo/client": "^3.0.0",
+    "apollo-angular": "^2.2.0",
+    "@fortawesome/angular-fontawesome": "^0.9.0",
+    "@fortawesome/fontawesome-svg-core": "^1.2.36",
+    "@fortawesome/free-solid-svg-icons": "^5.15.4",
+    "@popperjs/core": "^2.10.2",
+    "bootstrap": "^5.1.1",
+    "core-js": "^3.18.1",
+    "ngx-toastr": "^14.1.3",
+    "rxjs": "~6.6.0",
+    "tslib": "^2.3.0",
+    "zone.js": "~0.11.4",
+    "@auth0/angular-jwt": "^2.0.0"
+}
+```
