@@ -1,0 +1,60 @@
+version: "3.7"
+services:
+  s_graphql:
+    build:
+      context: ./
+      target: s_graphql
+    container_name: game-check_graphql
+    volumes:
+    - ./backend/graphql:/project
+    ports:
+      - "${PORT_S_GRAPHQL}:${PORT_S_GRAPHQL}"
+    environment:
+      DB_MONGO_URI: ${DB_MONGO_URI}
+      PORT: ${PORT_S_GRAPHQL}
+    networks:
+      - game-check-point
+    depends_on:
+      - "db"
+  s_express:
+    build:
+      context: ./
+      target: s_express
+    container_name: game-check-express
+    volumes:
+    - ./backend/express:/project
+    ports:
+      - "${PORT_S_EXPRESS}:${PORT_S_EXPRESS}"
+    environment:
+      DB_MONGO_URI: ${DB_MONGO_URI}
+      JWT_SECRET: ${JWT_SECRET}
+    networks:
+      - game-check-point
+    depends_on:
+      - "db"
+  client:
+    build:
+      context: ./
+      target: client
+    container_name: game-check-angular
+    volumes:
+    - ./frontend:/project
+    ports:
+      - "80:${PORT_CLIENT}"
+    networks:
+      - game-check-point
+  db:
+    image: mongo:5.0.3
+    container_name: gamecheckmongodb
+    volumes:
+      - ./scripts/mongo-restore.sh:/docker-entrypoint-initdb.d/mongo-restore.sh
+      - ./dump/:/docker-entrypoint-initdb.d/dump/
+    ports:
+      - "${PORT_DB}:${PORT_DB}"
+    networks:
+      - game-check-point
+
+networks:
+  game-check-point:
+volumes:
+  gameCheckVol:
