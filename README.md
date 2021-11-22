@@ -1,4 +1,4 @@
-# Game-Checkpoint_Angular-Express (Dockerfile)
+# Game-Checkpoint_Angular-Express (Docker Compose)
 
 Creador: Fco. Javier Diez Garcia
 
@@ -10,37 +10,55 @@ Curso: Web Applications Development
 
 # Index
 
-- [Game-Checkpoint_Angular-Express (Dockerfile)](#game-checkpoint_angular-express-dockerfile)
+- [Game-Checkpoint_Angular-Express (Docker Compose)](#game-checkpoint_angular-express-docker-compose)
 - [Index](#index)
 - [Introduction](#introduction)
+- [Teoria](#teoria)
+  - [Docker Compose](#docker-compose)
+  - [Kubernetes](#kubernetes)
 - [Steps Dockeritation](#steps-dockeritation)
   - [1. Tag Repositorio](#1-tag-repositorio)
   - [2. Comprobacion Repositorio Remoto](#2-comprobacion-repositorio-remoto)
-  - [3. Creacion Rama 'main_dockerfile'](#3-creacion-rama-main_dockerfile)
-  - [4. Creacion Directorio y Archivos](#4-creacion-directorio-y-archivos)
-  - [5. Preparacion del primer commit](#5-preparacion-del-primer-commit)
-  - [6. Construccion del Script "docker_creation"](#6-construccion-del-script-docker_creation)
-  - [7. Creacion Dockerfile MongoDB](#7-creacion-dockerfile-mongodb)
-  - [8. Creacion Dockerfile Angular](#8-creacion-dockerfile-angular)
-  - [9. Creacion Dockerfile Express](#9-creacion-dockerfile-express)
-  - [10. Creacion del config.env](#10-creacion-del-configenv)
-  - [11. Cambio de funcion en Express](#11-cambio-de-funcion-en-express)
-  - [12. Push al repositiorio Remoto](#12-push-al-repositiorio-remoto)
-  - [13. Clon del repositorio y ejecucion del script](#13-clon-del-repositorio-y-ejecucion-del-script)
-- [Steps DockerHub Upload Images](#steps-dockerhub-upload-images)
-  - [1. Creacion Cuenta DockerHub](#1-creacion-cuenta-dockerhub)
-  - [2. Creacion Repositorio DockerHub](#2-creacion-repositorio-dockerhub)
-  - [3. Login DockerHub en Docker](#3-login-dockerhub-en-docker)
-  - [4. Subida al Repositorio DockerHub](#4-subida-al-repositorio-dockerhub)
-  - [5. Creacion y Subida de Respositorios/Imagenes](#5-creacion-y-subida-de-respositoriosimagenes)
+  - [3. Creacion Rama 'main_docker_compose'](#3-creacion-rama-main_docker_compose)
+  - [4. Creacion Dockerfile](#4-creacion-dockerfile)
+  - [5. Creacion del docker-compose](#5-creacion-del-docker-compose)
+  - [6. Archivo Enviroment con las variables](#6-archivo-enviroment-con-las-variables)
+  - [7. Arranque de la aplicacion](#7-arranque-de-la-aplicacion)
+  - [8. Comprobacion del funcionamiento](#8-comprobacion-del-funcionamiento)
 
 # Introduction
 
 
-Mediante un script haremos que Docker cree 3 imagenes si los conetenedores no existen, crearlos y si existen los arrancaramos.
+Mediante la utilizacion de un Dockerfile con stages, un .env.dev, scripts y el Docker Compose se genera un sistema para el funcionamiento optimo de la aplicacion de Angular-Express-GraphQL-MongoDB.
 
-Tambien se creara una red para que esten comunicados y se pasaran los archivos necesarios para el funcionamiento de estos.
 
+# Teoria
+
+
+## Docker Compose
+***
+
+Compose es una herramienta para la definicion y funcionamiento de aplicaciones en multiples contenedores. Con Compose, puedes utilizar un fichero YAML para configurar como seran los servicios de tu aplicacion. Entonces, con un simple comando podras crear e iniciar todos los servicios de tu configuracion. Compose funciona en todos los entornos del desarollo: produccion, staging, desarollo y testing.
+
+Para hacer funcionar tu Compose necesitaras:
+
+- Definir el entorno de tu aplicacion mediante un dockerfile o imagen de DockerHub para ser reutilizada en cualquier parte.
+
+- Definir los servicios que componen tu aplicacion en el docker-compose.yml para que ellos funcionen juntos y de manera aisolada.
+
+- Ejecuta el docker-compose up para que la aplicacion se ponga en marcha.
+
+## Kubernetes
+***
+La orquestacion de contenedores es manejar el ciclo de vida de estos, en particular en entornos grandes y dinamicos. Automatiza el desarollo, el sistema de redes, la escalada y viabilidad de la contencion de cargas en los servicios. Kubernetes se ha convertido en el estandar para la orquestacion de contedores a nivel global.
+
+El cluster es lo que conseguimos cuando despliegas un Kubernete en maquinas fisicas o virutales. Consiste en dos tipos de maquinas:
+
+- Workers: Los recursos usados para ejecurtar los servicios necesitados.
+  
+- Panel de control de hosts: Usados para manejar a los workers y monitorizar tods la actividad del sistema.
+
+Todo cluster tiene al menos un worker y el panel de control puede ser localizado en un unica maquina. En entornos de produccion, hay normalmente un gran numero de workers, dependiendo del numero de contenedores a ejecutar y el panel de control esta distribuido a lo largo de multiples maquinas para conseguir la maxima viabilidad y tolerancias de errores.
 
 # Steps Dockeritation
 
@@ -53,8 +71,7 @@ Tambien se creara una red para que esten comunicados y se pasaran los archivos n
 
 ```bash
 # Comandos Utilizados:
-git tag v0.5 -m "Version Beta de la Aplicacion";
-git push origin --tags;
+git tag v0.6 -m "Version Beta de la App Dockerizada";
 ```
 
 ## 2. Comprobacion Repositorio Remoto
@@ -62,227 +79,134 @@ git push origin --tags;
 >
 >![ScreenShot](img/2.png)
 
-## 3. Creacion Rama 'main_dockerfile'
-> Lo siguiente es crear la rama main_dockerfile donde tendremos todo lo nuevo sin afectar a la rama principal
+```bash
+# Comandos Utilizados:
+git push origin --tags;
+```
+
+## 3. Creacion Rama 'main_docker_compose'
+> Lo siguiente es crear la rama main_docker_compose donde tendremos todo lo nuevo sin afectar a la rama principal
 > 
 > ![ScreenShot](img/3.png)
 ```bash
 # Comando Utilizado:
-git checkout -b "main_dockerfile";
+git checkout -b "main_docker_compose";
 ```
 
-## 4. Creacion Directorio y Archivos
-> Creamos la carpeta que contendra los archivos dockerfile y los archivos que queramos copiar mediante el dockerfile (la basede datos y el archivo config.env con la variables de express )
+## 4. Creacion Dockerfile
+> Dentro de esta creamos un dockerfile con multistage para reducir de 3 dockerfiles a uno y hacerles target mas tarde en el docker-compose
 > 
 > ![ScreenShot](img/4.png)
-```bash
-# Comandos Utilizados:
-mkdir docker;
-touch docker/dockerfile-server;
-touch docker/dockerfile-client;
-touch docker/dockerfile-db;
-touch docker/config.env;
-touch docker_creation.sh;
-```
-
-## 5. Preparacion del primer commit
-
-> Creamos la carpeta que contendra los archivos dockerfile y los archivos que queramos copiar mediante el dockerfile (la basede datos y el archivo config.env con la variables de express )
-> 
->![ScreenShot](filesREADME/5.png)
-```bash
-# Comandos Utilizados:
-git add .;
-git commit -m "Preparando la Carpeta";
-```
-
-## 6. Construccion del Script "docker_creation"
-> Creamos el script que comprobara si existen los contenedores, si existen devolveran 0, 1, 2 y 3, cada uno significando una condicion distinta (no existen, existe express, existe angular y existen los dos).
-> 
-> Despues tendremos las 3 funciones que dependiendo de los resultados anteriores crearan el contenedor la imagen y el contenedor sino existe el contenedor y si existen los arrancaran.
->
-> Por ultimo ejecutamos las funciones, creamos la red de los contenedores, copiamos el confing.env en la carpeta de backend/config y exportamos la base de datos mediante un comando hacia el contenedor.
-> 
->![ScreenShot](filesREADME/6.png)
-
-```sh
-#!/bin/bash
-
-network='game-check-point';
-cServer='game-check-express';
-cClient='game-check-angular';
-cDB='gamecheckmongodb';
-path=`pwd`;
-
-checkContainer(){
-    docker=0;
-    
-    if  [ `docker ps -a -f name=$cServer | wc -l` -gt 1 ] ;then
-        docker=$(($docker + 1));
-    fi
-    
-    if  [ `docker ps -a -f name=$cClient | wc -l` -gt 1 ] ;then
-        docker=$(($docker + 2));
-    fi
-    echo $docker;
-}
-
-db(){
-    if [ `docker ps -a -f name=$cDB | wc -l ` -eq 1 ] ;then
-        docker build -t $cDB -f docker/dockerfile-db docker;
-        docker run --name=$cDB -v gameCheckVol:/data/db --network=$network -p 27017:27017 -d $cDB:latest
-    else
-        docker start $cDB > /dev/null &2>&1;;
-    fi
-}
-
-server(){
-    if [ $cExist -eq 1 ] || [ $cExist -eq 3 ];then
-        docker stop $cServer > /dev/null &2>&1;
-        docker start $cServer > /dev/null &2>&1;
-    else
-        docker build -t $cServer -f docker/dockerfile-server docker;
-        docker run --name=$cServer -v ${path}/backend:/project --network=$network -p 4000:4000 -d $cServer:latest
-    fi
-}
-
-client(){
-    if [ $cExist -eq 2 ] || [ $cExist -eq 3 ];then
-        docker stop $cClient > /dev/null &2>&1;
-        docker start $cClient > /dev/null &2>&1;
-    else
-        docker build -t $cClient -f docker/dockerfile-client docker;
-        docker run --name=$cClient -v ${path}/frontend:/project --network=$network -p 80:4200 -d $cClient:latest
-    fi
-}
-
-cExist=`checkContainer`;
-docker network create $network > /dev/null &2>&1;
-cp ./docker/config.env ./backend/config/
-
-db;
-server;
-client;
-docker exec gamecheckmongodb mongorestore --db game-checkpoint --drop .;
-
-```
-## 7. Creacion Dockerfile MongoDB
-> Cogemos la imagen de mongo, creamos el diretorio padre e hijo /dump/checkpoint, nos situamos en ese ultimo y hacemos una copia de la base de datos a la imagen.
-> 
->![ScreenShot](filesREADME/7.png)
 ```dockerfile
-FROM mongo:5.0.3
-RUN mkdir -p /dump/checkpoint
-WORKDIR /dump/checkpoint
-COPY ./dump/game-checkpoint .
-```
-
-
-## 8. Creacion Dockerfile Angular
-> Cogemos la imagen de node:16.12.0-buster-slim por su ligereza, creamos el directorio del proyecto y lo hacemos nuestro directorio de trabajo y por ultimo ponemos de comando de arranque el npm install y el run start.
-> 
->![ScreenShot](filesREADME/8.png)
-
-```dockerfile
-FROM node:16.12.0-buster-slim
+FROM node:16.12.0-buster-slim as client
 RUN mkdir /project
 WORKDIR /project
 CMD npm install && npm run start
-```
-## 9. Creacion Dockerfile Express
-> Cogemos la misma configuracion de Angular cambiando unicamente el run start por dev
-> 
->![ScreenShot](filesREADME/9.png)
 
-```dockerfile
-FROM node:16.12.0-buster-slim
+FROM node:16.12.0-buster-slim as s_express
+RUN mkdir /project
+WORKDIR /project
+CMD npm install && npm run dev
+
+FROM node:16.12.0-buster-slim as s_graphql
 RUN mkdir /project
 WORKDIR /project
 CMD npm install && npm run dev
 ```
-## 10. Creacion del config.env
-> Creamos las dos variables necesarias para el proyecto de express dandole el nombre del contenedor de mongo y poniendo un secret default para cambiar luego
+
+## 5. Creacion del docker-compose
+
+> Se compondra de 4 servicios, de los cuales 3 seran buildeados apartir del target al dockerfile y otro mas de mongo sin dockerfile, sino apartir de una imagen.
+>
+> Todas las variables de entorno y los puertos se pasaran apartir de un fichero .env.dev. Los dos servidores GraphQL y Express dependeran de MongoDB a su mismo MongoDB gracias a la carpeta /docker-entrypoint-initdb.d y un montaje con un script se restaura automaticamente la base de datos.
+>
+>![ScreenShot](img/5.png)
+```yaml
+version: "3.7"
+services:
+  s_graphql:
+    build:
+      context: ./
+      target: s_graphql
+    container_name: game-check_graphql
+    volumes:
+    - ./backend/graphql:/project
+    ports:
+      - "${PORT_S_GRAPHQL}:${PORT_S_GRAPHQL}"
+    environment:
+      DB_MONGO_URI: ${DB_MONGO_URI}
+      PORT: ${PORT_S_GRAPHQL}
+    networks:
+      - game-check-point
+    depends_on:
+      - "db"
+  s_express:
+    build:
+      context: ./
+      target: s_express
+    container_name: game-check-express
+    volumes:
+    - ./backend/express:/project
+    ports:
+      - "${PORT_S_EXPRESS}:${PORT_S_EXPRESS}"
+    environment:
+      DB_MONGO_URI: ${DB_MONGO_URI}
+      JWT_SECRET: ${JWT_SECRET}
+    networks:
+      - game-check-point
+    depends_on:
+      - "db"
+  client:
+    build:
+      context: ./
+      target: client
+    container_name: game-check-angular
+    volumes:
+    - ./frontend:/project
+    ports:
+      - "80:${PORT_CLIENT}"
+    networks:
+      - game-check-point
+  db:
+    image: mongo:5.0.3
+    container_name: gamecheckmongodb
+    volumes:
+      - ./scripts/mongo-restore.sh:/docker-entrypoint-initdb.d/mongo-restore.sh
+      - ./dump/:/docker-entrypoint-initdb.d/dump/
+    ports:
+      - "${PORT_DB}:${PORT_DB}"
+    networks:
+      - game-check-point
+
+networks:
+  game-check-point:
+volumes:
+  gameCheckVol:
+```
+
+## 6. Archivo Enviroment con las variables
+> Tendremos la url del servidor de mongo, el secret de JWT y todos los puertos utilizados en el docker-compose.
 > 
->![ScreenShot](filesREADME/10.png)
+>![ScreenShot](img/6.png)
+
 ```env
-DB_MONGO_URI='mongodb://gamecheckmongodb:27017/game-checkpoint'
-JWT_SECRET='isATestSecret'
+DB_MONGO_URI=mongodb://gamecheckmongodb:27017/game-checkpoint
+JWT_SECRET=isATestSecret
+PORT_S_EXPRESS=4000
+PORT_S_GRAPHQL=4001
+PORT_DB=27017
+PORT_CLIENT=4200
 ```
-## 11. Cambio de funcion en Express
-> Cambiamos la funcion de Mongoose para conectarnos, haciendo que ahora intente conectarse cada X tiempo solucionando problemas en la ejecucion de los contenedores por que este listo o no mongoDB
+## 7. Arranque de la aplicacion
+> Mediante docker-compose up y el parametro --env-file pondremos en marcha la aplicacion
 > 
->![ScreenShot](filesREADME/11.png)
-```js
-// Parte app.js
-async function connectToMongoDB(){
-    console.log('Trying to connect to mongodb!');
-    try{
-        await mongoose.connect(process.env.DB_MONGO_URI);
-        mongoose.set('debug', true);
-    } catch (e) { setTimeout(connectToMongoDb, 5000); }
-}
-
-connectToMongoDb();
-```
-## 12. Push al repositiorio Remoto
-> Una vez hecho todos los cambios necesarios hacemos un push de la rama al repositorio remoto.
-> 
->![ScreenShot](filesREADME/12.png)
+>![ScreenShot](img/7.png)
 ```bash
-# Comandos Utilizados:
-git add .;
-git commit;
-git push origin main_dockerfile;
+#Comando a utilizar
+docker-compose --env-file ./.env.dev up
 ```
-## 13. Clon del repositorio y ejecucion del script
-> El paso final es clonar el repositorio dar permisos al script y ejecutar-lo una vez hecho eso estamos listos para utilizar la aplicacion
+
+## 8. Comprobacion del funcionamiento
+> Una vez acabado de cargar entramos atraves de localhost y el puerto (80 en mi caso) y comprobamos que la aplicacion funciona correctamente.
 > 
->![ScreenShot](filesREADME/13.png)
-```bash
-# Comandos Utilizados:
-git clone https://github.com/JDiezGarcia/Game-Checkpoint_Angular-Express.git .;
-git checkout main_dockerfile;
-chmod +x docker_creation.sh;
-bash docker_creation.sh;
-```
-# Steps DockerHub Upload Images
-
-## 1. Creacion Cuenta DockerHub
-
-> Primero creamos una cuenta en DockerHub y una vez verificada vamos al apartado Repositories/Repositorios y damos al boton de crear un repositorio.
->
->![ScreenShot](filesREADME/14.png)
-
-## 2. Creacion Repositorio DockerHub
-> Lo siguiente es crear un tag para la imagen que despues se subira a este repositorio, lo pondremos publico para que todos puedan verlo.
->
->![ScreenShot](filesREADME/15.png)
-
-## 3. Login DockerHub en Docker
-> Debemos loguearnos para poder hacer subidas a los repositorios
-> 
-> ![ScreenShot](filesREADME/18.png)
-```bash
-# Comando Utilizado:
-docker login -u jdiezgarcia;
-```
-
-## 4. Subida al Repositorio DockerHub
-> Ahora subimos nuestra imagen al repositorio
-> 
-> ![ScreenShot](filesREADME/16.png)
-```bash
-# Comando Utilizado:
-docker push jdiezgarcia/game-check-angular;
-```
-## 5. Creacion y Subida de Respositorios/Imagenes
-> Cuando tenemos una imagen pero no tiene un user asociado mediante el nombre lo que hacemos es cambiarle el nombre a la imagen y entonces podemos subirla mediante push, creando asi un repositorio instantaneo sin necesidad de crearlo desde la web.
-> 
-> ![ScreenShot](filesREADME/17.png)
-```bash
-# Comandos Utilizados:
-docker tag game.check.express jdiezgarcia/game-check-express;
-docker tag gamecheckmongodb jdiezgarcia/game-check-mongodb;
-docker push jdiezgarcia/game-check-express;
-docker push jdiezgarcia/game-check-mongodb;
-```
+>![ScreenShot](img/10.png)
