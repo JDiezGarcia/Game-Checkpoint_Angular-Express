@@ -25,6 +25,16 @@ Curso: Web Applications Development
   - [6. Archivo Enviroment con las variables](#6-archivo-enviroment-con-las-variables)
   - [7. Arranque de la aplicacion](#7-arranque-de-la-aplicacion)
   - [8. Comprobacion del funcionamiento](#8-comprobacion-del-funcionamiento)
+- [Añadir Prometheus y Grafana](#añadir-prometheus-y-grafana)
+  - [1. Añadir al docker-compose los dos servicios o crear uno nuevo](#1-añadir-al-docker-compose-los-dos-servicios-o-crear-uno-nuevo)
+  - [2. Creacion Datasources para Grafana](#2-creacion-datasources-para-grafana)
+  - [3. Creacion de Prometheus para este.](#3-creacion-de-prometheus-para-este)
+  - [4. Paquetes para Express](#4-paquetes-para-express)
+  - [5. Utilizacion de los paquetes desde express](#5-utilizacion-de-los-paquetes-desde-express)
+  - [6. Modificar backend para poder acceder a la metricas](#6-modificar-backend-para-poder-acceder-a-la-metricas)
+  - [7. Comprobacion de prometheus](#7-comprobacion-de-prometheus)
+  - [8. Comprobacion de la ruta /metrics](#8-comprobacion-de-la-ruta-metrics)
+  - [9. Comprobacion de Grafana](#9-comprobacion-de-grafana)
 
 # Introduction
 
@@ -210,3 +220,128 @@ docker-compose --env-file ./.env.dev up
 > Una vez acabado de cargar entramos atraves de localhost y el puerto (80 en mi caso) y comprobamos que la aplicacion funciona correctamente.
 > 
 >![ScreenShot](img/10.png)
+
+# Añadir Prometheus y Grafana
+
+## 1. Añadir al docker-compose los dos servicios o crear uno nuevo
+> Añadimos al docker-compose o creamos uno nuevo con los dos siguientes servicios, prometheus dependiendo de express y grafana de prometheus. 
+> 
+>![ScreenShot](img/20.png)
+```yaml
+prometheus:
+    image: prom/prometheus:v2.20.1
+    container_name: prometheus
+    volumes:
+    - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+    - "${PORT_PROMETHEUS}:${PORT_PROMETHEUS}"
+    depends_on:
+    - s_express
+    command: ["--config.file=/etc/prometheus/prometheus.yml"]
+    networks:
+    - game-check-point
+grafana:
+    image: grafana/grafana:7.1.5
+    container_name: grafana
+    environment:
+    - GF_DISABLE_LOGIN_FORM=true
+    - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+    - GF_AUTH_ANONYMOUS_ENABLED=true
+    - GF_INSTALL_PLUGINS=grafana-clock-panel 1.0.1
+    volumes:
+    - myGrafanaVol:/var/lib/grafana
+    - ./grafana/datasources.yml:/etc/grafana/provisioning/datasources/datasources.yml
+    ports:
+    - "3500:3000"
+    depends_on:
+    - prometheus 
+    networks:
+    - game-check-point
+```
+## 2. Creacion Datasources para Grafana
+> Creamos la configuracion que pasamos por el punto de montaje, dandole el nombre del contenedor y el puerto
+> 
+>![ScreenShot](img/21.png)
+```yaml
+apiVersion: 1
+datasources:
+  - name: Prometheus
+    type: prometheus
+    access: proxy
+    orgId: 1
+    url: prometheus:9090
+    basicAuth: false
+    isDefault: true
+    editable: true
+```
+## 3. Creacion de Prometheus para este.
+> Creamos el fichero de configuracion del prometheus que le pasamos por el montaje dandole el target de express
+> 
+>![ScreenShot](img/22.a.png)
+```yaml
+global:
+  scrape_interval: 5s
+  evaluation_interval: 30s
+scrape_configs:
+  - job_name: "game-checkpoint"
+    honor_labels: true
+    static_configs:
+      - targets: ["s_express:4000"]
+```
+## 4. Paquetes para Express
+> Instalamos mediante npm los dos paquetes necesarios prom-client y response-time
+> 
+>![ScreenShot](img/22.b.png)
+```bash
+#Comandos a utilizar
+npm install --save prom-client response-time
+```
+
+## 5. Utilizacion de los paquetes desde express
+> Dentro del backend de express utilizaremos el prom-client, recolectaremos la metricas y crearemos el contador para despues utilizarlo en cualquiera de las rutas (podriamos crear un contador por endpoint).
+> 
+>![ScreenShot](img/23.png)
+
+```javascript
+var client = require('prom-client');
+
+const collectDefaultMetrics = client.collectDefaultMetrics;
+collectDefaultMetrics({ timeout: 5000 });
+
+const counterGameCheckEndpoint = new client.Counter({
+    name: 'counterGameCheckEndpoint',
+    help: 'The total number of processed requests to get endpoint'
+});
+
+// Y esto detro de una ruta counterGameCheckEndpoint.inc();
+```
+
+## 6. Modificar backend para poder acceder a la metricas
+> Para poder acceder a las metricas en el archivo index.js de routes crearemos los siguientes dos trozos de codigo uno de ellos para pasarle la ruta de metrics y poder acceder.
+> 
+>![ScreenShot](img/24.png)
+
+```javascript
+var router = require('express').Router();
+var client = require('prom-client');
+
+router.get('/metrics', async (req, res) => {
+    res.set('Content-Type', client.register.contentType);
+    res.end(await client.register.metrics());
+});
+```
+
+## 7. Comprobacion de prometheus
+> Una vez hecho los pasos anteriores y vuelto a hacer un docker-compose up del nuevo docker-compose o del antiguo modificado accedemos a localhost:9090/targets para comprobar nuestro endpoint.
+> 
+>![ScreenShot](img/25.png)
+
+## 8. Comprobacion de la ruta /metrics
+> Entramos en la ruta localhost:4000/metrics y comprobamos que al final nos sale el contrador creado por nosotros, si entramos a la ruta que incrementa podremos comprobar como el numero final cambia segun las peticiones ( counterGameCheckEndpoint Num )
+> 
+>![ScreenShot](img/26.png)
+
+## 9. Comprobacion de Grafana
+> Ya por ultimo comprobamos que en Grafana mediante la ruta localhost:3500/ y dentro de esta yendo a explore podremos acceder a un dropdown que pone metrics y ahi seleccionar nuestro endpoint
+> 
+>![ScreenShot](img/27.png)
