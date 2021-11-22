@@ -4,6 +4,15 @@ var Game = mongoose.model('Game');
 var auth = require('../auth');
 var User = mongoose.model('User');
 
+var client = require('prom-client');
+
+const collectDefaultMetrics = client.collectDefaultMetrics;
+collectDefaultMetrics({ timeout: 5000 });
+
+const counterGameCheckEndpoint = new client.Counter({
+    name: 'counterGameCheckEndpoint',
+    help: 'The total number of processed requests to get endpoint'
+});
 
 router.param('game', async function (req, res, next, slug) {
     await Game.findOne({ slug: slug })
@@ -20,7 +29,7 @@ router.post('/game', auth.required, function (req, res, next) {
         if (!user) { return res.sendStatus(401); }
 
         let game = new Game(req.body.game);
-        console.log(game)
+        counterGameCheckEndpoint.inc();
         return game.save().then(function () {
             return res.json({ message: "Creado con Exito" });
         });
@@ -46,6 +55,7 @@ router.get('/games', auth.required, async function (req, res, next) {
         try {
             gameList = await gameList;
             gamesCount = await gamesCount;
+            counterGameCheckEndpoint.inc();
         } catch (error) {
 
             console.log(error);
